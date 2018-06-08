@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>LOAD_INCOM_ORD</title> #parse("sys/header.html")
+<link rel="stylesheet"
+	href="${rc.contextPath}/statics/css/inputcommon.css">
+<link rel="stylesheet"
+	href="${rc.contextPath}/statics/css/examination.css">
+<style type="text/css">
+#rrapp .panel-heading {
+	width: 100%;
+	background-color: #3c8dbc;
+	color: #fff;
+	height: 40px;
+	line-height: 20px;
+	padding-left: 20px;
+}
+
+#rrapp .panel-heading .select_btn {
+	float: right;
+}
+
+#rrapp .panel-heading .select_btn a {
+	color: #fff;
+	text-decoration: none;
+	cursor: pointer;
+	margin-left: 5px;
+	border: 1px solid #fff;
+	padding: 4px 6px;
+	border-radius: 10px;
+}
+
+#rrapp .groupthree .col-sm-2 {
+	width: 37%;
+}
+.form-horizontal .form-group{
+	width:33%;
+}
+</style>
+</head>
+<body>
+	<div id="rrapp" v-cloak>
+		<div v-show="showList">
+			<div class="grid-btn">
+				<div class="panel-heading">
+					<span>筛选条件</span>
+					<div class="select_btn">
+						<a @click="query">查询</a> <a @click="reset">重置</a>
+					</div>
+				</div>
+				<div class="form-horizontal center-block">
+					<div class="groupthree">
+						<div class="form-group">
+							<div class="col-sm-2 control-label">进件编号</div>
+							<div class="groupthreeinput">
+								<input type="text" class="form-control" v-model="q.incomNo"
+									@keyup.enter="query" placeholder="进件编号">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-2 control-label">贷款合同号</div>
+							<div class="groupthreeinput">
+								<input type="text" class="form-control" v-model="q.contractNo"
+									@keyup.enter="query" placeholder="贷款合同号">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-2 control-label">借款客户名称</div>
+							<div class="groupthreeinput">
+								<input type="text" class="form-control" v-model="q.ciNm"
+									@keyup.enter="query" placeholder="借款企业名称">
+							</div>
+						</div>
+					</div>
+					<div class="groupthree">
+						<div class="form-group">
+							<div class="col-sm-2 control-label">借款客户证件号码</div>
+							<div class="groupthreeinput">
+								<input type="text" class="form-control" v-model="q.licence"
+									@keyup.enter="query" placeholder="营业执照号">
+							</div>
+						</div>
+							<div class="form-group">
+							<div class="col-sm-2 control-label">保费缴纳类型</div>
+							<div class="groupthreeinput">
+								<select v-model="q.insurePayTyp" class="form-control"
+									class="col-sm-10">
+									<option selected value="00" selected="selected">邦付宝代收</option>
+
+								</select>
+							</div>
+						</div>
+							<div class="form-group">
+							<div class="col-sm-2 control-label">保费缴纳状态</div>
+							<div class="groupthreeinput">
+								<select v-model="q.paySts" class="form-control"
+									class="col-sm-10">
+									<option selected value="" selected="selected">全部</option>
+									<option selected value="00">待收保费</option>
+									<option selected value="01">已收保费</option>
+
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="groupthree">
+						<div class="form-group">
+							<div class="col-sm-2 control-label" style="width: 43%;">核保日期区间</div>
+								<div class="groupthreeinput">
+									<input type="text" class="form-control iLayDate" id="payStartDate"
+										   placeholder="请选择" style="cursor: pointer;width: 130px;" readonly="readonly"
+										   isvalid="yes" checkexpession="notNull"/>
+								</div>
+						</div>
+						<div class="form-group" style="margin-left:-70px;color: #999;">
+							<div class="col-sm-2 control-label">——</div>
+								<div class="groupthreeinput">
+									<input type="text" class="form-control iLayDate" id="payEndDate"
+										   placeholder="默认当天" style="cursor: pointer;width: 130px;"  readonly="readonly"
+										   isvalid="yes" checkexpession="notNull"/>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-2 control-label"  style="width: 52%;">保费收取日期区间</div>
+								<div class="groupthreeinput">
+									<input type="text" class="form-control iLayDate" id="underStartDate"
+										   placeholder="请选择" style="cursor: pointer;width: 130px;" readonly="readonly"
+										   isvalid="yes" checkexpession="notNull" />
+								</div>
+						</div>
+						<div class="form-group" style="margin-left:-70px;color: #999;">
+							<div class="col-sm-2 control-label" style="margin-left: 20px">——</div>
+								<div class="groupthreeinput">
+									<input type="text" class="form-control iLayDate" id="underEndDate"
+										   placeholder="默认当天" style="cursor: pointer;width: 130px"  readonly="readonly"
+										   isvalid="yes" checkexpession="notNull"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			
+				<div class="panel-heading"
+					style="margin-top: 10px; margin-bottom: -12px">
+					<span>台账列表</span>
+					<div class="select_btn">
+						<a @click="reload">刷新</a>
+					</div>
+					<div class="select_btn">
+						<a @click="exportExcel">导出excel</a>
+					</div>
+				</div>
+				#if($shiro.hasPermission("loadincomord:save")) <a
+					class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+				#end #if($shiro.hasPermission("loadincomord:update")) <a
+					class="btn btn-primary" @click="update"><i
+					class="fa fa-pencil-square-o"></i>&nbsp;修改</a> #end
+				#if($shiro.hasPermission("loadincomord:delete")) <a
+					class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+				#end
+			</div>
+			<table id="jqGrid"></table>
+			<div id="jqGridPager"></div>
+		</div>
+	</div>
+	<script style="">
+	function incomNoHtmlHref(value, row){
+	    if(row.curStep != '0') {
+	    	return '<a href="#" onclick="vm.detail(\''+value+'\')">'+value+'</a>';
+	    } else {
+	        return "";
+	    }
+	}
+</script>
+	<script style="">
+    	operateNodeTm = function (loadTm,loadCycle1) {
+    		debugger;
+    	if(!loadTm){
+    	  return '';
+    	}
+    	var tmStr='';
+      	if(loadCycle1=='D'){
+      		tmStr='天';
+      	}else if(loadCycle1=='M'){
+      		tmStr='月';
+      	}else if(loadCycle1=='Y'){
+      	    tmStr='年';
+      	}
+     	return loadTm+tmStr; 
+  	  }
+	</script>
+	<script style="">
+  	  operateDetail = function (incomNo) {
+        var abandonHtml ='<a href="#" onclick="vm.pledgeOpen(\''+incomNo+'\')">详情</a>';
+        return abandonHtml 
+    }
+	</script>
+	<script src="${rc.contextPath}/statics/plugins/laydate/laydate.js?_${date.systemTime}"></script>
+	<script src="${rc.contextPath}/js/load/insureFeebook.js?_${date.systemTime}"></script>
+	<script src="${rc.contextPath}/js/load/common.js?_${date.systemTime}"></script>
+	
+</body>
+</html>

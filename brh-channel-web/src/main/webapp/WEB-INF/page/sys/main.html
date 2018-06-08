@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>我的工作台</title>
+#parse("sys/header.html")
+</head>
+<body>
+	<div id="rrapp" class = "waitwrap" v-cloak>
+		<p class="waittile">待办任务:</p>
+		<div class="grid-btn">
+			<a class="btn btn-primary"   @click="queryWeek" >本周</a>
+			<a class="btn btn-primary"   @click="queryMonth">本月</a>
+			<a class="btn btn-primary"  style="background: #f0ad4e;border-color:#eea236" @click="query">全部</a>
+		</div>
+		<table id="jqGrid"></table>
+		<div id="jqGridPager"></div>
+	</div>
+	<script src="${rc.contextPath}/js/sys/main.js?_${date.systemTime}"></script>
+</body>
+</html>

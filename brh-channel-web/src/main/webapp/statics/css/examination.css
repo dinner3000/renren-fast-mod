@@ -1,0 +1,61 @@
+/*申请单页面tab选项卡样式*/
+#rrapp ul{
+	clear: both;
+}
+#rrapp .content-title ul{
+	margin-left: 1px;
+}
+#rrapp li{
+	list-style: none;
+}	
+#rrapp .content-title li{
+	list-style: none;
+	float: left;
+	border: 1px solid #ddd;
+	border-bottom: none;
+	padding:5px 60px;
+	color: #3c8dbc;
+	margin-bottom: -1px;
+	cursor: pointer;
+}
+#rrapp .content-title li{
+	border-right: none;
+}
+#rrapp .content-title li:nth-last-child(2){
+	border-right: 1px solid #ddd;
+}
+#rrapp .content-title li:nth-child(1){
+	border-top-left-radius: 4px;
+}
+#rrapp .content-title li:nth-last-child(2){
+	border-top-right-radius: 4px;
+}
+#rrapp .content-title .on{
+	border-top: 1px solid red;
+}
+#rrapp .content-title .data-scan{
+	float: right;
+	background: #3c8dbc;
+	color: #fff;
+	border: 1px solid #ddd;
+	padding:4px 30px;
+	cursor: pointer;
+	border-radius: 4px;
+}
+#rrapp .content-title,#rrapp .content-wrap{
+	margin-left: -40px;
+}
+#rrapp .content-wrap ul{
+	position: relative;
+}
+#rrapp .content-wrap ul li{
+	position: absolute;
+	width: 100%;
+	display: none;
+}
+#rrapp .content-wrap ul li .panel{
+	margin-right:40px;
+}
+#rrapp .content-wrap ul li.on{
+	display: block;
+}

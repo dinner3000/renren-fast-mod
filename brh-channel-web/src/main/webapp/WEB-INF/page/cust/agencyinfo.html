@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="${rc.contextPath}/statics/css/inputcommon.css">
+<title>合作机构管理</title> #parse("sys/header.html")
+</head>
+<body>
+	<div id="rrapp" v-cloak>
+
+		<div v-show="showList">
+
+			<div class="grid-btn groupthree">
+				<div class="form-group col-sm-2" style="width: 23%">
+					<input type="text" class="form-control" v-model="q.agencyNm"
+						@keyup.enter="query" placeholder="合作商名称">
+				</div>
+				<div class="form-group col-sm-2" style="width: 23%">
+					<select v-model="q.cooTyp" class="form-control" class="col-sm-10">
+						<option selected value=" " selected="selected">所有</option>
+						<option value="0">资金合作机构</option>
+						<option value="1">资产合作机构</option>
+						<option value="2">担保机构</option>
+					</select>
+				</div>
+				<div class="form-group col-sm-2" style="width: 23%">
+					<select v-model="q.status" class="form-control" class="col-sm-10">
+						<option selected value=" " selected="selected">所有</option>
+						<option value="0">有效</option>
+						<option value="1">终止</option>
+					</select>
+				</div>
+			</div>
+			<br />
+			<div style="margin-top: -20px; margin-bottom: 20px">
+				<a class="btn btn-default" @click="query">查询</a>
+				#if($shiro.hasPermission("agencyinfo:save")) <a
+					class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+				#end #if($shiro.hasPermission("agencyinfo:update")) <a
+					class="btn btn-primary" @click="update"><i
+					class="fa fa-pencil-square-o"></i>&nbsp;修改</a> #end
+				<!-- 	#if($shiro.hasPermission("agencyinfo:delete")) <a
+					class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+				#end  -->
+				<!-- 	#if($shiro.hasPermission("agencyinfo:list")) <a
+					class="btn btn-primary" @click="reload"><i
+					class="fa fa-trash-o"></i>&nbsp;刷新</a> #end -->
+
+			</div>
+			<table id="jqGrid"></table>
+			<div id="jqGridPager"></div>
+		</div>
+
+		<div v-show="showEdit" class="panel panel-default">
+			<div class="panel-heading">合作机构信息</div>
+			<form class="form-horizontal center-block">
+				<div class="grouplist">
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<span>*</span>机构名称
+						</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" required isvalid="yes"
+								checkexpession="agencyname" v-model.trim="agencyInfo.agencyNm"
+								placeholder="合作机构名称" />
+
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<span>*</span>合作角色
+						</div>
+						<div class="col-sm-10">
+							<select class="form-control" v-model="agencyInfo.cooTyp">
+								<option value="0">资金合作机构</option>
+								<option value="1">资产合作机构</option>
+								<option value="2">担保机构</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="grouplist">
+					<div class="form-group">
+						<div class="col-sm-4 col-md-4 col-sm-pull-1 control-label">
+							<div style="width: 100%; margin-left: 20px;">统一社会信用代码</div>
+						</div>
+						<div class="col-sm-8 col-md-8 col-sm-pull-1">
+							<input type="text" class="form-control" id="orgCodeId"
+								onchange="vm.upperCase(this.id)"
+								style="width: 78%; margin-left: 10px;" isvalid="yes"
+								checkexpession="OrgCode" v-model.trim="agencyInfo.orgCode"
+								placeholder="统一社会信用代码" />
+
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-12 col-sm-pull-1 control-label">
+							<span>*若企业已办理三证合一，只需填写统一社会信用代码</span>
+						</div>
+					</div>
+				</div>
+				<div class="grouplist">
+					<div class="form-group">
+						<div class="col-sm-2 control-label">营业执照号</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="licenceId" onchange="vm.upperCaseOld(this.id)" required isvalid="yes"
+								checkexpession="BSCard" v-model.trim="agencyInfo.licence"
+								placeholder="营业执照号" />
+
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">纳税人识别号</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="taxNoId" onchange="vm.upperCaseOld(this.id)" required isvalid="yes"
+								checkexpession="TaxNo" v-model.trim="agencyInfo.taxNo"
+								placeholder="纳税人识别号" />
+
+						</div>
+					</div>
+
+				</div>
+
+				<div class="grouplist">
+					<div class="form-group">
+						<div class="col-sm-2 control-label">组织机构代码</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="organCodeId" onchange="vm.upperCaseOld(this.id)" required isvalid="yes"
+								checkexpession="OrganCode" v-model.trim="agencyInfo.organCode"
+								placeholder="组织机构代码" />
+
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<span>*</span>法人姓名
+						</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" required isvalid="yes"
+								checkexpession="fullname" v-model.trim="agencyInfo.legalNm"
+								placeholder="法人姓名" />
+
+						</div>
+					</div>
+				</div>
+				<div class="grouplist">
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<span>*</span>证件类型
+						</div>
+						<div class="col-sm-10">
+
+							<select class="form-control" v-model="agencyInfo.idTyp">
+								<option value="00" selected="true">身份证</option>
+								<option value="01">护照</option>
+								<option value="02">军官证</option>
+								<option value="03">港澳居民往来内地通行证</option>
+								<option value="04">台胞证</option>
+								<option value="05">其他</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<span>*</span>证件号码
+						</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control"
+								v-model.trim="agencyInfo.idNo" required isvalid="yes"
+								checkexpession="IDCard" placeholder="证件号码" />
+
+						</div>
+					</div>
+				</div>
+				<div class="grouplist">
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<span>*</span>联系人
+						</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" isvalid="yes"
+								checkexpession="contacts" v-model.trim="agencyInfo.cooPer"
+								required placeholder="联系人" />
+
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<span>*</span>手机号
+						</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" isvalid="yes"
+								checkexpession="tel" v-model.trim="agencyInfo.cooTele"
+								placeholder="手机号" />
+
+						</div>
+					</div>
+				</div>
+				<div class="grouplist">
+					<div class="form-group">
+						<div class="col-sm-2 control-label">传真</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control"
+								v-model.trim="agencyInfo.fax" required isvalid="yes"
+								checkexpession="fax" placeholder="传真" />
+
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<span>*</span>邮编
+						</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" isvalid="yes"
+								checkexpession="postcode" v-model.trim="agencyInfo.postCode"
+								placeholder="邮编" />
+
+						</div>
+					</div>
+				</div>
+				<div class="grouplist">
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<span>*</span>联系地址
+						</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" isvalid="yes"
+								checkexpession="address" v-model.trim="agencyInfo.address"
+								placeholder="联系地址" />
+
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<span>*</span>邮箱
+						</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control"
+								v-model.trim="agencyInfo.email" placeholder="邮箱" isvalid="yes"
+								checkexpession="Email" />
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="input-btn" style="margin-top: 20px; margin-bottom: 20px">
+				<div class="col-sm-2 control-label"></div>
+				<input type="button" class="btn btn-primary" @click="saveOrUpdate"
+					value="保存" /> &nbsp;&nbsp;<input type="button"
+					class="btn btn-warning" @click="reload" value="返回" />
+			</div>
+		</div>
+
+
+		<div v-show="showDetail" class="panel panel-default">
+			<div class="panel-heading">合作机构信息</div>
+			<form class="form-horizontal center-block">
+				<div class="grouplist">
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<span>*</span>机构名称
+						</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" required
+								v-model="agencyInfo.agencyNm" placeholder="合作机构名称"
+								readonly="readonly" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<span>*</span>合作角色
+						</div>
+						<div class="col-sm-10">
+							<select class="form-control" v-model="agencyInfo.cooTyp" disabled>
+								<option value="0">资金合作机构</option>
+								<option value="1">资产合作机构</option>
+								<option value="2">担保机构</option>
+							</select>
+						</div>
+					</div>
+
+				</div>
+				<div class="grouplist">
+					<div class="form-group">
+						<div class="col-sm-4 col-md-4 col-sm-pull-1 control-label">
+							<div style="width: 100%; margin-left: 20px;">统一社会信用代码</div>
+						</div>
+						<div class="col-sm-8 col-md-8 col-sm-pull-1">
+							<input type="text" class="form-control"
+								style="width: 78%; margin-left: 10px;" readonly="readonly"
+								checkexpession="OrgCode" v-model.trim="agencyInfo.orgCode"
+								placeholder="统一社会信用代码" />
+
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-12 col-sm-pull-1 control-label">
+							<span>*若企业已办理三证合一，只需填写统一社会信用代码</span>
+						</div>
+					</div>
+				</div>
+				<div class="grouplist">
+					<div class="form-group">
+						<div class="col-sm-2 control-label">营业执照号</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" readonly="readonly"
+								checkexpession="BSCard" v-model.trim="agencyInfo.licence"
+								placeholder="营业执照号" />
+
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">纳税人识别号</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" readonly="readonly"
+								checkexpession="TaxNo" v-model.trim="agencyInfo.taxNo"
+								placeholder="纳税人识别号" />
+
+						</div>
+					</div>
+
+				</div>
+				<div class="grouplist">
+					<div class="form-group">
+						<div class="col-sm-2 control-label">组织机构代码</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" readonly="readonly"
+								checkexpession="OrgnCode" v-model.trim="agencyInfo.organCode"
+								placeholder="组织机构代码" />
+
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<span>*</span>法人姓名
+						</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" required
+								v-model="agencyInfo.legalNm" placeholder="法人姓名"
+								readonly="readonly" />
+						</div>
+					</div>
+				</div>
+				<div class="grouplist">
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<span>*</span>证件类型
+						</div>
+						<div class="col-sm-10">
+
+							<select class="form-control" v-model="agencyInfo.idTyp" disabled>
+								<option value="00" selected="true">身份证</option>
+								<option value="01">护照</option>
+								<option value="02">军官证</option>
+								<option value="03">港澳居民往来内地通行证</option>
+								<option value="04">台胞证</option>
+								<option value="05">其他</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<span>*</span>证件号码
+						</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" v-model="agencyInfo.idNo"
+								required placeholder="证件号码" readonly="readonly" />
+						</div>
+					</div>
+				</div>
+				<div class="grouplist">
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<span>*</span>联系人
+						</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control"
+								v-model="agencyInfo.cooPer" required placeholder="联系人"
+								readonly="readonly" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<span>*</span>手机号
+						</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control"
+								v-model="agencyInfo.cooTele" placeholder="手机号"
+								readonly="readonly" />
+						</div>
+					</div>
+				</div>
+				<div class="grouplist">
+					<div class="form-group">
+						<div class="col-sm-2 control-label">传真</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" v-model="agencyInfo.fax"
+								required placeholder="传真" readonly="readonly" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<span>*</span>邮编
+						</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control"
+								v-model="agencyInfo.postCode" placeholder="邮编"
+								readonly="readonly" />
+						</div>
+					</div>
+				</div>
+				<div class="grouplist">
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<span>*</span>联系地址
+						</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control"
+								v-model="agencyInfo.address" placeholder="联系地址"
+								readonly="readonly" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">
+							<span>*</span>邮箱
+						</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control"
+								v-model="agencyInfo.email" placeholder="邮箱" readonly="readonly" />
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="input-btn">
+				<div class="col-sm-2 control-label"></div>
+				<input type="button" class="btn btn-warning" @click="reload"
+					value="返回" />
+			</div>
+		</div>
+	</div>
+	<script style="">
+    operateDetail = function (agencyId,agencyNm) {
+        var abandonHtml ='<a href="#" onclick="vm.detail('+agencyId+')">'+agencyNm+'</a>';
+        return abandonHtml 
+    }
+	</script>
+	<script type="text/javascript">
+	operateAgency = function (agencyId,agencyNm,status) {
+	var abandonHtml="";
+		if(status=='0'){
+		 status='1';
+		 abandonHtml = '#if($shiro.hasPermission("load:agency:operation"))'
+			+ '<a href="#" onclick="vm.endOrActive('+agencyId+',\''+agencyNm+'\','+status+',\'终止\')">终止</a>' + '#end';
+		}else{
+		 status='0';
+		 abandonHtml = '#if($shiro.hasPermission("load:agency:operation"))'
+			+ '<a href="#" onclick="vm.endOrActive('+agencyId+',\''+agencyNm+'\','+status+',\'激活\')">激活</a>' + '#end';
+		}
+		return abandonHtml;
+	}</script>
+
+	<script
+		src="${rc.contextPath}/js/cust/agencyinfo.js?_${date.systemTime}"></script>
+</body>
+</html>

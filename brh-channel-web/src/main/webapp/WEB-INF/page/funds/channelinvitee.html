@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CHANNELINVEST</title>
+#parse("sys/header.html")
+
+<link rel="stylesheet"
+	href="${rc.contextPath}/statics/css/inputcommon.css">
+<link rel="stylesheet"
+	href="${rc.contextPath}/statics/css/examination.css">
+<style type="text/css">
+#rrapp .panel-heading {
+	width: 100%;
+	background-color: #3c8dbc;
+	color: #fff;
+	height: 40px;
+	line-height: 20px;
+	padding-left: 20px;
+}
+
+#rrapp .panel-heading .select_btn {
+	float: right;
+}
+
+#rrapp .panel-heading .select_btn a {
+	color: #fff;
+	text-decoration: none;
+	cursor: pointer;
+	margin-left: 5px;
+	border: 1px solid #fff;
+	padding: 4px 6px;
+	border-radius: 10px;
+}
+
+#rrapp .groupthree .col-sm-2 {
+	width: 37%;
+}
+.form-horizontal .form-group{
+	width:53%;
+}
+</style>
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+		<div class="grid-btn">
+			<div class="form-horizontal ">
+
+					<div class="groupthree">
+
+						<div class="form-group">
+							<div class="col-sm-2 control-label">起始日期:</div>
+							<div class="groupthreeinput">
+								<input type="text" class="form-control iLayDate" id="startDate"
+									placeholder="请选择" style="cursor: pointer; margin-right: 90px;"
+									readonly="readonly" isvalid="yes" checkexpession="notNull" />
+							</div>
+						</div>
+						<div class="form-group" style="margin-left: -148px;">
+							<div class="col-sm-2 control-label"
+								style="margin-right: 0px; width: 20%">结束日期:</div>
+							<div class="groupthreeinput">
+								<input type="text" class="form-control iLayDate" id="endDate"
+									readonly="readonly" placeholder="默认当天" style="cursor: pointer;"
+									isvalid="yes" checkexpession="notNull" />
+							</div>
+						</div>
+						<div style="margin-bottom: 20px">
+							<a class="btn btn-default" @click="query"
+								style="margin-left: -200px">查询</a>
+							<a class="btn btn-default" @click="exportExcel">导出表格</a>
+						</div>
+					</div>
+				</div>
+		</div>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+    
+    <div v-show="!showList" class="panel panel-default">
+		<div class="panel-heading">{{title}}</div>
+		<form class="form-horizontal">
+											<div class="form-group">
+			   	<div class="col-sm-2 control-label">REALNAME</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="channelinvest.realname" placeholder="REALNAME"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">INPUTTIME</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="channelinvest.inputtime" placeholder="INPUTTIME"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">AMOUNT</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="channelinvest.amount" placeholder="AMOUNT"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">PROJECTNAME</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="channelinvest.projectname" placeholder="PROJECTNAME"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">CHANNEL</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="channelinvest.channel" placeholder="CHANNEL"/>
+			    </div>
+			</div>
+							<div class="form-group">
+				<div class="col-sm-2 control-label"></div> 
+				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+			</div>
+		</form>
+	</div>
+</div>
+<div id="channel" hidden=""></div>
+<div id="startDay" hidden=""></div>
+<div id="endDay" hidden=""></div>
+<script>
+$(function () {
+	var channel = requestParam("channel");
+	//channel = "APP_ANDROID";
+	$("#channel").text(channel);
+	//bindDate();
+	//var startDay = vm.q.startDay;
+	//var endDay = vm.q.endDay;
+	var startDay = requestParam("startDay");
+	var endDay = requestParam("endDay");
+	$("#startDay").text(startDay);
+	$("#endDay").text(endDay);
+	bindDateTmp(startDay,endDay);
+});
+</script>
+<script src="${rc.contextPath}/js/funds/channelinvitee.js?_${date.systemTime}"></script>
+<script src="${rc.contextPath}/statics/plugins/laydate/laydate.js?_${date.systemTime}"></script>
+</body>
+</html>

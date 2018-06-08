@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.brh.channel.web.dao.AgencyInfoDao">
+	<resultMap id="BaseResultMap" type="com.brh.channel.web.entity.AgencyInfoEntity">
+		<id column="AGENCY_ID" jdbcType="VARCHAR" property="agencyId" />
+		<result column="AGENCY_NM" jdbcType="VARCHAR" property="agencyNm" />
+		<result column="LICENCE" jdbcType="VARCHAR" property="licence" />
+		<result column="ID_TYP" jdbcType="VARCHAR" property="idTyp" />
+		<result column="ID_NO" jdbcType="VARCHAR" property="idNo" />
+		<result column="LEGAL_NM" jdbcType="VARCHAR" property="legalNm" />
+		<result column="COO_TYP" jdbcType="VARCHAR" property="cooTyp" />
+		<result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+		<result column="COO_PER" jdbcType="VARCHAR" property="cooPer" />
+		<result column="COO_TELE" jdbcType="VARCHAR" property="cooTele" />
+		<result column="COO_PHONE" jdbcType="VARCHAR" property="cooPhone" />
+		<result column="POST_CODE" jdbcType="VARCHAR" property="postCode" />
+		<result column="FAX" jdbcType="VARCHAR" property="fax" />
+		<result column="EMAIL" jdbcType="VARCHAR" property="email" />
+		<result column="WEB_URL" jdbcType="VARCHAR" property="webUrl" />
+		<result column="OPER_ID" jdbcType="VARCHAR" property="operId" />
+		<result column="CREATE_TM" jdbcType="VARCHAR" property="createTm" />
+		<result column="TIME_STAMP" jdbcType="VARCHAR" property="timeStamp" />
+		<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+		<result column="STATUS" jdbcType="VARCHAR" property="status" />
+		<result column="ORG_CODE" jdbcType="VARCHAR" property="orgCode" />
+		<result column="ORGAN_CODE" jdbcType="VARCHAR" property="organCode" />
+		<result column="TAX_NO" jdbcType="VARCHAR" property="taxNo" />
+	</resultMap>
+	<sql id="Base_Column_List">
+    AGENCY_ID, AGENCY_NM, LICENCE,ID_TYP,ID_NO,LEGAL_NM,COO_TYP, ADDRESS, COO_PER, COO_TELE, COO_PHONE, POST_CODE, 
+    FAX, EMAIL, WEB_URL, OPER_ID, CREATE_TM, TIME_STAMP，STATUS,REMARK,ORG_CODE,ORGAN_CODE,TAX_NO
+	</sql>
+
+	<select id="queryObject" resultType="com.brh.channel.web.entity.AgencyInfoEntity">
+		select <include refid="Base_Column_List" /> from AGENCY_INFO where AGENCY_ID = #{value}
+	</select>
+	<select id="queryAgencyEntity" resultType="com.brh.channel.web.entity.AgencyInfoEntity">
+		select <include refid="Base_Column_List" /> from AGENCY_INFO where 1=1
+		<if test="agencyId != null and agencyId!= ''">
+       			AGENCY_ID = #{agencyId}
+		</if>
+		<if test="agencyNm != null and agencyNm!= ''">
+       			and AGENCY_NM =#{agencyNm}
+		</if>
+	</select>
+	<select id="queryList" resultType="com.brh.channel.web.entity.AgencyInfoEntity">
+		select n.* from (select rownum rn, m.* from (select AGENCY_INFO.* from AGENCY_INFO where 1=1
+		<if test="agencyId != null and agencyId!= ''">
+       			and agency_Id=#{agencyId}
+		</if>
+		<if test="agencyNm != null and agencyNm!= ''">
+       			and AGENCY_NM like '%'||#{agencyNm}||'%'
+		</if>
+		<if test="cooTyp != null and cooTyp!= ''">
+       			and COO_TYP = #{cooTyp}
+		</if>
+		<if test="status != null and status!= ''">
+       			and STATUS  = #{status}
+		</if>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+			</when>
+			<otherwise>
+                order by time_stamp desc
+			</otherwise>
+		</choose>)m)n
+		<if test="offset != null and limit != null">
+			where rn between  #{offset} and  #{limit}	
+		</if>
+	</select>
+	
+	<select id="queryTotal" resultType="int">
+		select count(*) from AGENCY_INFO where 1=1 
+		<if test="agencyNm != null and agencyNm!= ''">
+       			and AGENCY_NM like '%'||#{agencyNm}||'%'
+		</if>
+		<if test="cooTyp != null and cooTyp!= ''">
+       			and COO_TYP = #{cooTyp}
+		</if>
+		<if test="status != null and status!= ''">
+       			and STATUS  = #{status}
+		</if>
+	</select>
+	
+	<select id="getCooTypByUserId" resultType="string" parameterType="string">
+		select c.coo_typ
+		  from sys_user a
+		  left join sys_dept b
+		    on a.dept_id = b.dept_id
+		  left join agency_info c
+		    on b.agency_id = c.agency_id
+		 where a.user_id = #{userId}
+	</select>
+	
+	<select id="getAgencyIdByUserId" resultType="string" parameterType="string">
+		select c.agency_id  
+		from sys_user a
+		  left join sys_dept b
+		    on a.dept_id = b.dept_id
+		  left join agency_info c
+		    on b.agency_id = c.agency_id
+		 where a.user_id = #{userId}
+	</select>
+	
+	<insert id="save" parameterType="com.brh.channel.web.entity.AgencyInfoEntity">
+    insert into AGENCY_INFO (AGENCY_ID, AGENCY_NM, LICENCE,ID_TYP,ID_NO,LEGAL_NM,COO_TYP, 
+      ADDRESS, COO_PER, COO_TELE, 
+      COO_PHONE, POST_CODE, FAX, 
+      EMAIL, WEB_URL, OPER_ID, 
+      CREATE_TM, TIME_STAMP，STATUS,REMARK)
+    values (#{agencyId,jdbcType=VARCHAR}, #{agencyNm,jdbcType=VARCHAR},#{licence,jdbcType=VARCHAR},#{idTyp,jdbcType=VARCHAR},#{idNo,jdbcType=VARCHAR},#{legalNm,jdbcType=VARCHAR},
+    	 #{cooTyp,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{cooPer,jdbcType=VARCHAR}, #{cooTele,jdbcType=VARCHAR}, 
+      #{cooPhone,jdbcType=VARCHAR}, #{postCode,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{webUrl,jdbcType=VARCHAR}, #{operId,jdbcType=VARCHAR}, 
+      #{createTm,jdbcType=VARCHAR}, #{timeStamp,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.brh.channel.web.entity.AgencyInfoEntity">
+    insert into AGENCY_INFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="agencyId != null">
+        AGENCY_ID,
+			</if>
+			<if test="agencyNm != null">
+        AGENCY_NM,
+			</if>
+			<if test="licence != null">
+        LICENCE,
+			</if>
+			<if test="idTyp != null">
+        ID_TYP,
+			</if>
+			<if test="idNo != null">
+        ID_NO,
+			</if>
+			<if test="legalNm != null">
+        LEGAL_NM,
+			</if>
+			<if test="cooTyp != null">
+        COO_TYP,
+			</if>
+			<if test="address != null">
+        ADDRESS,
+			</if>
+			<if test="cooPer != null">
+        COO_PER,
+			</if>
+			<if test="cooTele != null">
+        COO_TELE,
+			</if>
+			<if test="cooPhone != null">
+        COO_PHONE,
+			</if>
+			<if test="postCode != null">
+        POST_CODE,
+			</if>
+			<if test="fax != null">
+        FAX,
+			</if>
+			<if test="email != null">
+        EMAIL,
+			</if>
+			<if test="webUrl != null">
+        WEB_URL,
+			</if>
+			<if test="operId != null">
+        OPER_ID,
+			</if>
+			<if test="createTm != null">
+        CREATE_TM,
+			</if>
+			<if test="timeStamp != null">
+        TIME_STAMP,
+			</if>
+			<if test="status != null">
+        STATUS,
+			</if>
+			<if test="remark != null">
+        REMARK,
+			</if>
+			<if test="orgCode != null">
+        ORG_CODE,
+			</if>
+			<if test="organCode != null">
+        ORGAN_CODE,
+			</if>
+			<if test="taxNo != null">
+        TAX_NO,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="agencyId != null">
+        #{agencyId,jdbcType=VARCHAR},
+			</if>
+			<if test="agencyNm != null">
+        #{agencyNm,jdbcType=VARCHAR},
+			</if>
+			<if test="licence != null">
+         #{licence,jdbcType=VARCHAR},
+			</if>
+			<if test="idTyp != null">
+          #{idTyp,jdbcType=VARCHAR},
+			</if>
+			<if test="idNo != null">
+          #{idNo,jdbcType=VARCHAR},
+			</if>
+			<if test="legalNm != null">
+          #{legalNm,jdbcType=VARCHAR},
+			</if>
+			<if test="cooTyp != null">
+        #{cooTyp,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+        #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="cooPer != null">
+        #{cooPer,jdbcType=VARCHAR},
+			</if>
+			<if test="cooTele != null">
+        #{cooTele,jdbcType=VARCHAR},
+			</if>
+			<if test="cooPhone != null">
+        #{cooPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="postCode != null">
+        #{postCode,jdbcType=VARCHAR},
+			</if>
+			<if test="fax != null">
+        #{fax,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+        #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="webUrl != null">
+        #{webUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="operId != null">
+        #{operId,jdbcType=VARCHAR},
+			</if>
+			<if test="createTm != null">
+        #{createTm,jdbcType=VARCHAR},
+			</if>
+			<if test="timeStamp != null">
+        #{timeStamp,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+        #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="orgCode != null">
+        #{orgCode,jdbcType=VARCHAR},
+			</if>
+			<if test="organCode != null">
+        #{organCode,jdbcType=VARCHAR},
+			</if>
+			<if test="taxNo != null">
+        #{taxNo,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.brh.channel.web.entity.AgencyInfoEntity">
+    update AGENCY_INFO
+		<set>
+			<if test="agencyNm != null and agencyNm.trim() != '' ">
+        AGENCY_NM = #{agencyNm,jdbcType=VARCHAR},
+			</if>
+			<if test="licence != null ">
+         LICENCE = #{licence,jdbcType=VARCHAR},
+			</if>
+			<if test="idTyp != null and idTyp.trim() != '' ">
+          ID_TYP = #{idTyp,jdbcType=VARCHAR},
+			</if>
+			<if test="idNo != null and idNo.trim() != ''">
+         ID_NO = #{idNo,jdbcType=VARCHAR},
+			</if>
+			<if test="legalNm != null and legalNm.trim() != ''">
+          LEGAL_NM = #{legalNm,jdbcType=VARCHAR},
+			</if>
+			<if test="cooTyp != null and cooTyp.trim() != ''">
+        COO_TYP = #{cooTyp,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null and address.trim() != ''">
+        ADDRESS = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="cooPer != null and cooPer.trim() != ''">
+        COO_PER = #{cooPer,jdbcType=VARCHAR},
+			</if>
+			<if test="cooTele != null and cooTele.trim() != '' ">
+        COO_TELE = #{cooTele,jdbcType=VARCHAR},
+			</if>
+			<if test="cooPhone != null and cooPhone.trim() != '' ">
+        COO_PHONE = #{cooPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="postCode != null and postCode.trim() != ''">
+        POST_CODE = #{postCode,jdbcType=VARCHAR},
+			</if>
+			<if test="fax != null">
+        FAX = #{fax,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null  and email.trim() != ''">
+        EMAIL = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="webUrl != null and webUrl.trim() != ''">
+        WEB_URL = #{webUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="operId != null and operId.trim() != ''">
+        OPER_ID = #{operId,jdbcType=VARCHAR},
+			</if>
+			<if test="createTm != null  and createTm.trim() != ''">
+        CREATE_TM = #{createTm,jdbcType=VARCHAR},
+			</if>
+			<if test="timeStamp != null and timeStamp.trim() != ''">
+        TIME_STAMP = #{timeStamp,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="orgCode != null">
+        ORG_CODE = #{orgCode,jdbcType=VARCHAR},
+			</if>
+			<if test="organCode != null">
+        ORGAN_CODE = #{organCode,jdbcType=VARCHAR},
+			</if>
+			<if test="taxNo != null">
+        TAX_NO = #{taxNo,jdbcType=VARCHAR},
+			</if>
+		</set>
+    where AGENCY_ID = #{agencyId,jdbcType=VARCHAR}
+	</update>
+	<update id="update" parameterType="com.brh.channel.web.entity.AgencyInfoEntity">
+    update AGENCY_INFO
+    set AGENCY_NM = #{agencyNm,jdbcType=VARCHAR},
+    LICENCE = #{licence,jdbcType=VARCHAR},
+    ID_TYP = #{idTyp,jdbcType=VARCHAR},
+    ID_NO = #{idNo,jdbcType=VARCHAR},
+    LEGAL_NM = #{legalNm,jdbcType=VARCHAR},
+      COO_TYP = #{cooTyp,jdbcType=VARCHAR},
+      ADDRESS = #{address,jdbcType=VARCHAR},
+      COO_PER = #{cooPer,jdbcType=VARCHAR},
+      COO_TELE = #{cooTele,jdbcType=VARCHAR},
+      COO_PHONE = #{cooPhone,jdbcType=VARCHAR},
+      POST_CODE = #{postCode,jdbcType=VARCHAR},
+      FAX = #{fax,jdbcType=VARCHAR},
+      EMAIL = #{email,jdbcType=VARCHAR},
+      WEB_URL = #{webUrl,jdbcType=VARCHAR},
+      OPER_ID = #{operId,jdbcType=VARCHAR},
+      CREATE_TM = #{createTm,jdbcType=VARCHAR},
+      TIME_STAMP = #{timeStamp,jdbcType=VARCHAR},
+       REMARK = #{remark,jdbcType=VARCHAR}
+    where AGENCY_ID = #{agencyId,jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from AGENCY_INFO where AGENCY_ID = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from AGENCY_INFO where AGENCY_ID in 
+		<foreach item="agencyId" collection="array" open="(" separator="," close=")">
+			#{agencyId}
+		</foreach>
+	</delete>
+	
+	<select id="queryAgencyInfoByAgencyId" parameterType="string"
+		resultType="com.brh.channel.web.entity.AgencyInfoEntity">
+		select * from agency_info a where a.agency_id = #{agencyId}
+	</select>
+</mapper>

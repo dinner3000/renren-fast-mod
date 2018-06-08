@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.brh.channel.gen.dao.SysGeneratorDao">
+	<select id="queryList" resultType="Map">
+		select m.table_Name table_Name ,m.engine engine,m.table_comment table_comment,m.create_Time create_Time  from (select rownum rn,n.* from (select table_name as table_Name, tablespace_name as engine, table_name as table_comment, last_analyzed as create_Time from USER_TABLES  
+			where 1=1
+		<if test="tableName != null and tableName.trim() != ''">
+			and table_name like '%'||#{tableName}||'%'
+		</if>
+		order by last_analyzed desc)n ) m
+		<if test="offset != null and limit != null">
+			where rn between  #{offset} and  #{limit}
+		</if>
+	</select>
+	
+	<select id="queryTotal" resultType="int">
+		select count(*) from  USER_TABLES where 1=1
+		<if test="tableName != null and tableName.trim() != ''">
+			and table_name like '%'||#{tableName}||'%'
+		</if> 
+	</select> 
+	
+	<select id="queryTable" resultType="map">
+		select table_name table_Name, tablespace_name engine, table_name table_Comment, last_analyzed create_Time from USER_TABLES
+			where  table_name = #{tableName}
+	</select> 
+	
+	<select id="queryColumns" resultType="map">
+		select column_name column_Name, column_name column_Comment,data_type data_Type, column_id column_Key from user_tab_columns
+ 			where table_name = #{tableName}  order by column_id
+	</select>
+</mapper>

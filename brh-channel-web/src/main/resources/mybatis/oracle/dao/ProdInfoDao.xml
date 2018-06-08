@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brh.channel.web.dao.ProdInfoDao">
+  <resultMap id="BaseResultMap" type="com.brh.channel.web.entity.ProdInfoEntity">
+    <id column="PROD_ID" jdbcType="VARCHAR" property="prodId" />
+    <result column="PROD_NO" jdbcType="VARCHAR" property="prodNo" />
+    <result column="PROD_NM" jdbcType="VARCHAR" property="prodNm" />
+    <result column="PROD_TYP" jdbcType="VARCHAR" property="prodTyp" />
+    <result column="PROD_RATE" jdbcType="DECIMAL" property="prodRate" />
+    <result column="ISSUER" jdbcType="VARCHAR" property="issuer" />
+    <result column="STRUCT_TYP" jdbcType="VARCHAR" property="structTyp" />
+    <result column="REPAY_WAY" jdbcType="VARCHAR" property="repayWay" />
+    <result column="REPAY_CYCLE" jdbcType="VARCHAR" property="repayCycle" />
+    <result column="REPAY_TIME" jdbcType="VARCHAR" property="repayTime" />
+    <result column="LOAD_MIN" jdbcType="DECIMAL" property="loadMin" />
+    <result column="LOAD_MAX" jdbcType="DECIMAL" property="loadMax" />
+    <result column="PROD_STS" jdbcType="VARCHAR" property="prodSts" />
+    <result column="OPER_ID" jdbcType="VARCHAR" property="operId" />
+    <result column="CREATE_TM" jdbcType="VARCHAR" property="createTm" />
+    <result column="TIMESTAMP" jdbcType="VARCHAR" property="timestamp" />
+    <result column="GUARANTEE_TYP" jdbcType="VARCHAR" property="guaranteeTyp" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    PROD_ID, PROD_NO, PROD_NM, PROD_TYP, PROD_RATE, ISSUER, STRUCT_TYP, REPAY_WAY, REPAY_CYCLE, 
+    REPAY_TIME, LOAD_MIN, LOAD_MAX, PROD_STS, OPER_ID, CREATE_TM, TIMESTAMP,GUARANTEE_TYP
+  </sql>
+  
+    <select id="queryList" resultType="com.brh.channel.web.entity.ProdInfoEntity">
+		select * from (select T.* , rownum rn from (
+<!-- 		select * from PROD_INFO  -->
+			select b.agency_nm as issuer,
+                       a.prod_id,
+                       a.prod_no,
+                       a.prod_nm,
+                       a.prod_typ,
+                       a.prod_rate,
+                       a.struct_typ,
+                       a.repay_way,
+                       a.repay_cycle,
+                       a.repay_time,
+                       a.load_min,
+                       a.load_max,
+                       a.prod_sts,
+                       a.oper_id,
+                       a.create_tm,
+                       a.timestamp,
+                       a.guarantee_Typ
+                  from prod_info a
+                  left join agency_info b
+                    on a.issuer = b.agency_id
+
+		<where> 1=1
+			<if test="prodNo != null and prodNo.trim() != ''">
+				and a.PROD_NO = #{prodNo}
+			</if>
+			<if test="prodNm != null and prodNm.trim() != ''">
+				and a.PROD_NM like '%'||#{prodNm}||'%'
+			</if>
+            <if test="prodSts != null and prodSts.trim() != ''">
+                and a.PROD_STS = #{prodSts}
+            </if>
+		</where>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by timestamp desc
+			</otherwise>
+		</choose>
+	)T
+	<if test="limit != null">
+	<![CDATA[ where rownum <= ${limit} ]]>
+	</if>
+	)
+	<if test="offset != null">
+	<![CDATA[ where rn >= ${offset}]]>
+	</if>
+	</select>
+  
+  <select id="queryObject" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from PROD_INFO
+    where PROD_ID = #{prodId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="queryTotal" resultType="int">
+    select count(*) from PROD_INFO
+      <where> 1=1
+          <if test="prodNo != null and prodNo.trim() != ''">
+              and PROD_NO = #{prodNo}
+          </if>
+          <if test="prodNm != null and prodNm.trim() != ''">
+              and PROD_NM like '%'||#{prodNm}||'%'
+          </if>
+          <if test="prodSts != null and prodSts.trim() != ''">
+              and PROD_STS = #{prodSts}
+          </if>
+      </where>
+  </select>
+  
+  <select id="queryReProdNoByProdNo" resultType="int" parameterType="java.lang.String">
+		select count(PROD_NO) from PROD_INFO where PROD_NO = #{prodNo,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="queryReProdNmByProdNm" resultType="int" parameterType="java.lang.String">
+		select count(PROD_NM) from PROD_INFO where PROD_NM = #{prodNm,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="queryReProdIdByProdNm" resultType="string" parameterType="java.lang.String">
+		select PROD_ID from PROD_INFO where PROD_NM = #{prodNm,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteBatch">
+		delete from PROD_INFO where PROD_ID in 
+		<foreach item="prodId" collection="array" open="(" separator="," close=")">
+			#{prodId}
+		</foreach>
+  </delete>
+  <delete id="deleteProd">
+		delete from PROD_INFO where PROD_ID = #{prodId}
+  </delete>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from PROD_INFO
+    where PROD_ID = #{prodId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertSelective" parameterType="com.brh.channel.web.entity.ProdInfoEntity">
+    insert into PROD_INFO (PROD_ID, PROD_NO, PROD_NM, 
+      PROD_TYP, PROD_RATE, ISSUER, 
+      STRUCT_TYP, REPAY_WAY, REPAY_CYCLE, 
+      REPAY_TIME, LOAD_MIN, LOAD_MAX, 
+      PROD_STS, OPER_ID, CREATE_TM, 
+      TIMESTAMP)
+    values (#{prodId,jdbcType=VARCHAR}, #{prodNo,jdbcType=VARCHAR}, #{prodNm,jdbcType=VARCHAR}, 
+      #{prodTyp,jdbcType=VARCHAR}, #{prodRate,jdbcType=DECIMAL}, #{issuer,jdbcType=VARCHAR}, 
+      #{structTyp,jdbcType=VARCHAR}, #{repayWay,jdbcType=VARCHAR}, #{repayCycle,jdbcType=VARCHAR}, 
+      #{repayTime,jdbcType=VARCHAR}, #{loadMin,jdbcType=DECIMAL}, #{loadMax,jdbcType=DECIMAL}, 
+      #{prodSts,jdbcType=VARCHAR}, #{operId,jdbcType=VARCHAR}, #{createTm,jdbcType=VARCHAR}, 
+      #{timestamp,jdbcType=VARCHAR})
+  </insert>
+  <insert id="save" parameterType="com.brh.channel.web.entity.ProdInfoEntity">
+  	<selectKey keyProperty="prodId" order="BEFORE" resultType="String">
+			select ''||CREDIT_ID_SEQ.Nextval as ID from dual
+	</selectKey>
+    insert into PROD_INFO
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+<!--       <if test="prodId != null"> -->
+        PROD_ID,
+<!--       </if> -->
+      <if test="prodNo != null">
+        PROD_NO,
+      </if>
+      <if test="prodNm != null">
+        PROD_NM,
+      </if>
+      <if test="prodTyp != null">
+        PROD_TYP,
+      </if>
+      <if test="prodRate != null">
+        PROD_RATE,
+      </if>
+      <if test="issuer != null">
+        ISSUER,
+      </if>
+      <if test="structTyp != null">
+        STRUCT_TYP,
+      </if>
+      <if test="repayWay != null">
+        REPAY_WAY,
+      </if>
+      <if test="repayCycle != null">
+        REPAY_CYCLE,
+      </if>
+      <if test="repayTime != null">
+        REPAY_TIME,
+      </if>
+      <if test="loadMin != null">
+        LOAD_MIN,
+      </if>
+      <if test="loadMax != null">
+        LOAD_MAX,
+      </if>
+      <if test="prodSts != null">
+        PROD_STS,
+      </if>
+      <if test="operId != null">
+        OPER_ID,
+      </if>
+      <if test="createTm != null">
+        CREATE_TM,
+      </if>
+      <if test="timestamp != null">
+        TIMESTAMP,
+      </if>
+      <if test="guaranteeTyp != null">
+        GUARANTEE_TYP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+<!--       <if test="prodId != null"> -->
+        #{prodId,jdbcType=VARCHAR},
+<!--       </if> -->
+      <if test="prodNo != null">
+        #{prodNo,jdbcType=VARCHAR},
+      </if>
+      <if test="prodNm != null">
+        #{prodNm,jdbcType=VARCHAR},
+      </if>
+      <if test="prodTyp != null">
+        #{prodTyp,jdbcType=VARCHAR},
+      </if>
+      <if test="prodRate != null">
+        #{prodRate,jdbcType=DECIMAL},
+      </if>
+      <if test="issuer != null">
+        #{issuer,jdbcType=VARCHAR},
+      </if>
+      <if test="structTyp != null">
+        #{structTyp,jdbcType=VARCHAR},
+      </if>
+      <if test="repayWay != null">
+        #{repayWay,jdbcType=VARCHAR},
+      </if>
+      <if test="repayCycle != null">
+        #{repayCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="repayTime != null">
+        #{repayTime,jdbcType=VARCHAR},
+      </if>
+      <if test="loadMin != null">
+        #{loadMin,jdbcType=DECIMAL},
+      </if>
+      <if test="loadMax != null">
+        #{loadMax,jdbcType=DECIMAL},
+      </if>
+      <if test="prodSts != null">
+        #{prodSts,jdbcType=VARCHAR},
+      </if>
+      <if test="operId != null">
+        #{operId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTm != null">
+        #{createTm,jdbcType=VARCHAR},
+      </if>
+      <if test="timestamp != null">
+        #{timestamp,jdbcType=VARCHAR},
+      </if>
+      <if test="guaranteeTyp != null">
+        #{guaranteeTyp,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.brh.channel.web.entity.ProdInfoEntity">
+    update PROD_INFO
+    <set>
+      <if test="prodNo != null and prodNo!= ''">
+        PROD_NO = #{prodNo,jdbcType=VARCHAR},
+      </if>
+      <if test="prodNm != null and prodNm!= ''">
+        PROD_NM = #{prodNm,jdbcType=VARCHAR},
+      </if>
+      <if test="prodTyp != null and prodTyp!= ''">
+        PROD_TYP = #{prodTyp,jdbcType=VARCHAR},
+      </if>
+      <if test="prodRate != null">
+        PROD_RATE = #{prodRate,jdbcType=DECIMAL},
+      </if>
+      <if test="issuer != null and issuer!= ''">
+        ISSUER = #{issuer,jdbcType=VARCHAR},
+      </if>
+      <if test="structTyp != null and structTyp!= ''">
+        STRUCT_TYP = #{structTyp,jdbcType=VARCHAR},
+      </if>
+      <if test="repayWay != null and repayWay!= ''">
+        REPAY_WAY = #{repayWay,jdbcType=VARCHAR},
+      </if>
+      <if test="repayCycle != null and repayCycle!= ''">
+        REPAY_CYCLE = #{repayCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="repayTime != null and repayTime!= ''">
+        REPAY_TIME = #{repayTime,jdbcType=VARCHAR},
+      </if>
+      <if test="loadMin != null">
+        LOAD_MIN = #{loadMin,jdbcType=DECIMAL},
+      </if>
+      <if test="loadMax != null">
+        LOAD_MAX = #{loadMax,jdbcType=DECIMAL},
+      </if>
+      <if test="prodSts != null and prodSts!= ''">
+        PROD_STS = #{prodSts,jdbcType=VARCHAR},
+      </if>
+      <if test="operId != null and operId!= ''">
+        OPER_ID = #{operId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTm != null  and createTm!= ''">
+        CREATE_TM = #{createTm,jdbcType=VARCHAR},
+      </if>
+      <if test="timestamp != null and timestamp!= ''">
+        TIMESTAMP = #{timestamp,jdbcType=VARCHAR},
+      </if>
+      <if test="guaranteeTyp != null and guaranteeTyp != ''">
+        GUARANTEE_TYP = #{guaranteeTyp,jdbcType=VARCHAR},
+      </if>
+      
+    </set>
+    where PROD_ID = #{prodId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.brh.channel.web.entity.ProdInfoEntity">
+    update PROD_INFO
+    set PROD_NO = #{prodNo,jdbcType=VARCHAR},
+      PROD_NM = #{prodNm,jdbcType=VARCHAR},
+      PROD_TYP = #{prodTyp,jdbcType=VARCHAR},
+      PROD_RATE = #{prodRate,jdbcType=DECIMAL},
+      ISSUER = #{issuer,jdbcType=VARCHAR},
+      STRUCT_TYP = #{structTyp,jdbcType=VARCHAR},
+      REPAY_WAY = #{repayWay,jdbcType=VARCHAR},
+      REPAY_CYCLE = #{repayCycle,jdbcType=VARCHAR},
+      REPAY_TIME = #{repayTime,jdbcType=VARCHAR},
+      LOAD_MIN = #{loadMin,jdbcType=DECIMAL},
+      LOAD_MAX = #{loadMax,jdbcType=DECIMAL},
+      PROD_STS = #{prodSts,jdbcType=VARCHAR},
+      OPER_ID = #{operId,jdbcType=VARCHAR},
+      CREATE_TM = #{createTm,jdbcType=VARCHAR},
+      TIMESTAMP = #{timestamp,jdbcType=VARCHAR}
+    where PROD_ID = #{prodId,jdbcType=VARCHAR}
+  </update>
+</mapper>

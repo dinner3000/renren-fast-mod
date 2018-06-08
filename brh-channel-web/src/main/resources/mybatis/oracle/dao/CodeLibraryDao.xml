@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.brh.channel.web.dao.CodeLibraryDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.brh.channel.web.entity.CodeLibraryEntity" id="codeLibraryMap">
+        <result property="codeNo" column="CODENO"/>
+        <result property="itemNo" column="ITEMNO"/>
+        <result property="itemName" column="ITEMNAME"/>
+        <result property="bankNo" column="BANKNO"/>
+        <result property="sortNo" column="SORTNO"/>
+        <result property="isInuse" column="ISINUSE"/>
+        <result property="itemDescribe" column="ITEMDESCRIBE"/>
+        <result property="itemAttribute" column="ITEMATTRIBUTE"/>
+        <result property="relativeCode" column="RELATIVECODE"/>
+        <result property="attribute1" column="ATTRIBUTE1"/>
+        <result property="attribute2" column="ATTRIBUTE2"/>
+        <result property="attribute3" column="ATTRIBUTE3"/>
+        <result property="attribute4" column="ATTRIBUTE4"/>
+        <result property="attribute5" column="ATTRIBUTE5"/>
+        <result property="attribute6" column="ATTRIBUTE6"/>
+        <result property="attribute7" column="ATTRIBUTE7"/>
+        <result property="attribute8" column="ATTRIBUTE8"/>
+        <result property="inputuser" column="INPUTUSER"/>
+        <result property="inputorg" column="INPUTORG"/>
+        <result property="inputtime" column="INPUTTIME"/>
+        <result property="updateuser" column="UPDATEUSER"/>
+        <result property="updatetime" column="UPDATETIME"/>
+        <result property="remark" column="REMARK"/>
+        <result property="helptext" column="HELPTEXT"/>
+        <result property="createdDate" column="CREATED_DATE"/>
+        <result property="updatedDate" column="UPDATED_DATE"/>
+        <result property="attribute9" column="ATTRIBUTE9"/>
+        <result property="flag" column="FLAG"/>
+    </resultMap>
+	<sql id="columns">
+	       CODENO,
+	       ITEMNO,
+	       ITEMNAME,
+	       BANKNO,
+	       SORTNO,
+	       ISINUSE,
+	       ITEMDESCRIBE,
+	       ITEMATTRIBUTE,
+	       RELATIVECODE,
+	       ATTRIBUTE1,
+	       ATTRIBUTE2,
+	       ATTRIBUTE3,
+	       ATTRIBUTE4,
+	       ATTRIBUTE5,
+	       ATTRIBUTE6,
+	       ATTRIBUTE7,
+	       ATTRIBUTE8,
+	       INPUTUSER,
+	       INPUTORG,
+	       INPUTTIME,
+	       UPDATEUSER,
+	       UPDATETIME,
+	       REMARK,
+	       HELPTEXT,
+	       CREATED_DATE,
+	       UPDATED_DATE,
+	       ATTRIBUTE9,
+	       FLAG
+		</sql>
+	<select id="queryObject" resultType="com.brh.channel.web.entity.CodeLibraryEntity">
+		select <include refid="columns" /> from NEW_PORTAL.CODE_LIBRARY where CODENO = #{codeNo}
+	</select>
+
+	<select id="queryList" resultType="com.brh.channel.web.entity.CodeLibraryEntity">
+		select m.* from (select rownum rn, CODE_LIBRARY.* from CODE_LIBRARY
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by CODENO desc
+			</otherwise>
+        </choose>)m
+		<if test="offset != null and limit != null">
+			where rn between  #{offset} and  #{limit}	
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from CODE_LIBRARY 
+	</select>
+	 
+	<insert id="save" parameterType="com.brh.channel.web.entity.CodeLibraryEntity">
+		insert into CODE_LIBRARY
+		(
+			CODENO , 
+			ITEMNO , 
+			ITEMNAME , 
+			BANKNO , 
+			SORTNO , 
+			ISINUSE , 
+			ITEMDESCRIBE , 
+			ITEMATTRIBUTE , 
+			RELATIVECODE , 
+			ATTRIBUTE1 , 
+			ATTRIBUTE2 , 
+			ATTRIBUTE3 , 
+			ATTRIBUTE4 , 
+			ATTRIBUTE5 , 
+			ATTRIBUTE6 , 
+			ATTRIBUTE7 , 
+			ATTRIBUTE8 , 
+			INPUTUSER , 
+			INPUTORG , 
+			INPUTTIME , 
+			UPDATEUSER , 
+			UPDATETIME , 
+			REMARK , 
+			HELPTEXT , 
+			CREATED_DATE , 
+			UPDATED_DATE , 
+			ATTRIBUTE9 , 
+			FLAG 
+		)
+		values
+		(
+			#{codeno}, 
+			#{itemno}, 
+			#{itemname}, 
+			#{bankno}, 
+			#{sortno}, 
+			#{isinuse}, 
+			#{itemdescribe}, 
+			#{itemattribute}, 
+			#{relativecode}, 
+			#{attribute1}, 
+			#{attribute2}, 
+			#{attribute3}, 
+			#{attribute4}, 
+			#{attribute5}, 
+			#{attribute6}, 
+			#{attribute7}, 
+			#{attribute8}, 
+			#{inputuser}, 
+			#{inputorg}, 
+			#{inputtime}, 
+			#{updateuser}, 
+			#{updatetime}, 
+			#{remark}, 
+			#{helptext}, 
+			#{createdDate}, 
+			#{updatedDate}, 
+			#{attribute9}, 
+			#{flag}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.brh.channel.web.entity.CodeLibraryEntity">
+		update CODE_LIBRARY 
+		<set>
+			<if test="itemno != null">ITEMNO = #{itemno}, </if>
+			<if test="itemname != null">ITEMNAME = #{itemname}, </if>
+			<if test="bankno != null">BANKNO = #{bankno}, </if>
+			<if test="sortno != null">SORTNO = #{sortno}, </if>
+			<if test="isinuse != null">ISINUSE = #{isinuse}, </if>
+			<if test="itemdescribe != null">ITEMDESCRIBE = #{itemdescribe}, </if>
+			<if test="itemattribute != null">ITEMATTRIBUTE = #{itemattribute}, </if>
+			<if test="relativecode != null">RELATIVECODE = #{relativecode}, </if>
+			<if test="attribute1 != null">ATTRIBUTE1 = #{attribute1}, </if>
+			<if test="attribute2 != null">ATTRIBUTE2 = #{attribute2}, </if>
+			<if test="attribute3 != null">ATTRIBUTE3 = #{attribute3}, </if>
+			<if test="attribute4 != null">ATTRIBUTE4 = #{attribute4}, </if>
+			<if test="attribute5 != null">ATTRIBUTE5 = #{attribute5}, </if>
+			<if test="attribute6 != null">ATTRIBUTE6 = #{attribute6}, </if>
+			<if test="attribute7 != null">ATTRIBUTE7 = #{attribute7}, </if>
+			<if test="attribute8 != null">ATTRIBUTE8 = #{attribute8}, </if>
+			<if test="inputuser != null">INPUTUSER = #{inputuser}, </if>
+			<if test="inputorg != null">INPUTORG = #{inputorg}, </if>
+			<if test="inputtime != null">INPUTTIME = #{inputtime}, </if>
+			<if test="updateuser != null">UPDATEUSER = #{updateuser}, </if>
+			<if test="updatetime != null">UPDATETIME = #{updatetime}, </if>
+			<if test="remark != null">REMARK = #{remark}, </if>
+			<if test="helptext != null">HELPTEXT = #{helptext}, </if>
+			<if test="createdDate != null">CREATED_DATE = #{createdDate}, </if>
+			<if test="updatedDate != null">UPDATED_DATE = #{updatedDate}, </if>
+			<if test="attribute9 != null">ATTRIBUTE9 = #{attribute9}, </if>
+			<if test="flag != null">FLAG = #{flag}</if>
+		</set>
+		where CODENO = #{codeno}
+	</update>
+	
+	<delete id="delete">
+		delete from CODE_LIBRARY where CODENO = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from CODE_LIBRARY where CODENO in 
+		<foreach item="codeno" collection="array" open="(" separator="," close=")">
+			#{codeno}
+		</foreach>
+	</delete>
+
+</mapper>

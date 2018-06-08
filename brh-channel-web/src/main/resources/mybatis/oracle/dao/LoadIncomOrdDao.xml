@@ -1,0 +1,1105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brh.channel.web.dao.LoadIncomOrdDao">
+	<resultMap id="BaseResultMap" type="com.brh.channel.web.entity.LoadIncomOrdEntity">
+		<id column="INCOM_NO" jdbcType="VARCHAR" property="incomNo" />
+		<result column="CI_NO" jdbcType="VARCHAR" property="ciNo" />
+		<result column="PROD_NO" jdbcType="VARCHAR" property="prodNo" />
+		<result column="PROD_NM" jdbcType="VARCHAR" property="prodNm" />
+		<result column="CONTRACT_NO" jdbcType="VARCHAR" property="contractNo" />
+		<result column="LOAD_AMT" jdbcType="DECIMAL" property="loadAmt" />
+		<result column="REPAY_WAY" jdbcType="VARCHAR" property="repayWay" />
+		<result column="LOAD_RATE" jdbcType="DECIMAL" property="loadRate" />
+		<result column="LOAD_TM1" jdbcType="VARCHAR" property="loadTm1" />
+		<result column="INSUR_NO" jdbcType="VARCHAR" property="insurNo" />
+		<result column="LEND_NO" jdbcType="VARCHAR" property="lendNo" />
+		<result column="CREDIT_AMT" jdbcType="DECIMAL" property="creditAmt" />
+		<result column="INSUR_AMT" jdbcType="DECIMAL" property="insurAmt" />
+		<result column="LOAD_TM2" jdbcType="VARCHAR" property="loadTm2" />
+		<result column="PROC_INST_ID" jdbcType="VARCHAR" property="procInstId" />
+		<result column="CUR_STEP" jdbcType="VARCHAR" property="curStep" />
+		<result column="STATUS" jdbcType="VARCHAR" property="status" />
+		<result column="START_TM" jdbcType="VARCHAR" property="startTm" />
+		<result column="END_TM" jdbcType="VARCHAR" property="endTm" />
+		<result column="OPER_ID" jdbcType="VARCHAR" property="operId" />
+		<result column="CREATE_TM" jdbcType="VARCHAR" property="createTm" />
+		<result column="TIMESTAMP" jdbcType="VARCHAR" property="timestamp" />
+		<result column="CI_NM" jdbcType="VARCHAR" property="ciNm" />
+		<result column="CI_TYP" jdbcType="VARCHAR" property="ciTyp" />
+		
+		<result column="AGENCY_ID" jdbcType="VARCHAR" property="agencyId" />
+		<result column="AGENCY_NM" jdbcType="VARCHAR" property="agencyNm" />
+		<result column="INSUR_FEE" jdbcType="DECIMAL" property="insurFee" />
+		<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+		
+		<result column="ACCOUNT_MANAGER" jdbcType="VARCHAR" property="accountManager" />
+	    <result column="LOAN_CARD_NO" jdbcType="VARCHAR" property="loanCardNo" />
+	    <result column="INSURE_BEGIN_TM" jdbcType="VARCHAR" property="insureBeginTm" />
+	    <result column="INSURE_END_TM" jdbcType="VARCHAR" property="insureEndTm" />
+	    <result column="INSURE_FEE_RATE" jdbcType="DECIMAL" property="insureFeeRate" />
+	    <result column="INSURE_PROD" jdbcType="VARCHAR" property="insureProd" />
+	    <result column="INSURE_PROD_NM" jdbcType="VARCHAR" property="insureProdNm" />
+	    <result column="ABS_EXCESS" jdbcType="DECIMAL" property="absExcess" />
+	    <result column="INSURE_PAY_TYP" jdbcType="VARCHAR" property="insurePayTyp" />
+	    <result column="OUT_AGENCY_ID" jdbcType="VARCHAR" property="outAgencyId" />
+	    <result column="SPECIAL_AGR" jdbcType="VARCHAR" property="specialAgr" />
+	    <result column="UNDERWRITE_USER" jdbcType="VARCHAR" property="underwriteUser" />
+	    <result column="UNDERWRITE_TM" jdbcType="VARCHAR" property="underwriteTm" />
+	    <result column="PAY_STS" jdbcType="VARCHAR" property="paySts" />
+	    <result column="ISSUE_STS" jdbcType="VARCHAR" property="issueSts" />
+	    <result column="PAY_INSURE_AMT" jdbcType="DECIMAL" property="payInsureAmt" />
+	    <result column="PAY_INSURE_TM" jdbcType="VARCHAR" property="payInsureTm" />
+	    <result column="INSURE_ACCOUNT_MGR" jdbcType="DECIMAL" property="insureAccountMgr" />
+	    <result column="INSURE_ACCOUNT_MGRNO" jdbcType="VARCHAR" property="insureAccountMgrno" />
+	    <result column="INSURE_FILE_STS" jdbcType="VARCHAR" property="insureFileSts" />
+	    <result column="ARGUE_DEAL" jdbcType="VARCHAR" property="argueDeal" />
+	</resultMap>
+	<resultMap id="ViewResultMap" type="com.brh.channel.web.entity.LoadIncomOrdEntity">
+		<id column="INCOM_NO" jdbcType="VARCHAR" property="incomNo" />
+		<result column="CI_NO" jdbcType="VARCHAR" property="ciNo" />
+		<result column="PROD_NO" jdbcType="VARCHAR" property="prodNo" />
+		<result column="PROD_NM" jdbcType="VARCHAR" property="prodNm" />
+		<result column="CONTRACT_NO" jdbcType="VARCHAR" property="contractNo" />
+		<result column="LOAD_AMT" jdbcType="DECIMAL" property="loadAmt" />
+		<result column="REPAY_WAY" jdbcType="VARCHAR" property="repayWay" />
+		<result column="LOAD_RATE" jdbcType="DECIMAL" property="loadRate" />
+		<result column="LOAD_TM1" jdbcType="VARCHAR" property="loadTm1" />
+		<result column="LOAD_CYCLE1" jdbcType="VARCHAR" property="loadCycle1" />
+		<result column="INSUR_NO" jdbcType="VARCHAR" property="insurNo" />
+		<result column="LEND_NO" jdbcType="VARCHAR" property="lendNo" />
+		<result column="CREDIT_AMT" jdbcType="DECIMAL" property="creditAmt" />
+		<result column="INSUR_AMT" jdbcType="DECIMAL" property="insurAmt" />
+		<result column="LOAD_TM2" jdbcType="VARCHAR" property="loadTm2" />
+		<result column="LOAD_CYCLE2" jdbcType="VARCHAR" property="loadCycle2" />
+		<result column="PROC_INST_ID" jdbcType="VARCHAR" property="procInstId" />
+		<result column="CUR_STEP" jdbcType="VARCHAR" property="curStep" />
+		<result column="STATUS" jdbcType="VARCHAR" property="status" />
+		<result column="START_TM" jdbcType="VARCHAR" property="startTm" />
+		<result column="END_TM" jdbcType="VARCHAR" property="endTm" />
+		<result column="OPER_ID" jdbcType="VARCHAR" property="operId" />
+		<result column="CREATE_TM" jdbcType="VARCHAR" property="createTm" />
+		<result column="TIMESTAMP" jdbcType="VARCHAR" property="timestamp" />
+		<result column="CI_NM" jdbcType="VARCHAR" property="ciNm" />
+		<result column="CI_TYP" jdbcType="VARCHAR" property="ciTyp" />
+    
+		<result column="PROC_INST_ID_IN" jdbcType="VARCHAR" property="procInstIdIn" />
+		<result column="TASK_ID" jdbcType="VARCHAR" property="taskId" />
+		<result column="ACT_ID" jdbcType="VARCHAR" property="actId" />
+		<result column="ACT_NAME" jdbcType="VARCHAR" property="actName" />
+		<result column="ASSIGNEE" jdbcType="VARCHAR" property="assignee" />
+		<result column="DELEGATION_ID" jdbcType="VARCHAR" property="delegationId" />
+		<result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+		<result column="BUSINESS_KEY_IN" jdbcType="VARCHAR" property="businessKeyIn" />
+		<result column="CREATE_TIME" jdbcType="VARCHAR" property="createTime" />
+		<result column="DUE_DATE" jdbcType="VARCHAR" property="dueDate" />
+		<result column="CANDIDATE" jdbcType="VARCHAR" property="candidate" />
+		
+		<result column="AGENCY_ID" jdbcType="VARCHAR" property="agencyId" />
+		<result column="AGENCY_NM" jdbcType="VARCHAR" property="agencyNm" />
+		<result column="INSUR_FEE" jdbcType="DECIMAL" property="insurFee" />
+		<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+	</resultMap>
+	<sql id="Base_Column_List">
+    INCOM_NO, CI_NO, PROD_NO, PROD_NM, CONTRACT_NO, LOAD_AMT, REPAY_WAY, LOAD_RATE, LOAD_TM1,LOAD_CYCLE1, 
+    INSUR_NO, LEND_NO, CREDIT_AMT, INSUR_AMT, LOAD_TM2,LOAD_CYCLE2, PROC_INST_ID, CUR_STEP, STATUS, 
+    START_TM, END_TM, OPER_ID, CREATE_TM, TIMESTAMP, CI_NM, CI_TYP,AGENCY_ID,AGENCY_NM,INSUR_FEE,REMARK,
+    ACCOUNT_MANAGER, LOAN_CARD_NO, INSURE_BEGIN_TM, INSURE_END_TM, INSURE_FEE_RATE, INSURE_PROD, INSURE_PROD_NM,
+    ABS_EXCESS, INSURE_PAY_TYP, OUT_AGENCY_ID, SPECIAL_AGR, UNDERWRITE_USER, UNDERWRITE_TM, PAY_STS,
+    ISSUE_STS, PAY_INSURE_AMT, PAY_INSURE_TM,INSURE_ACCOUNT_MGR,INSURE_ACCOUNT_MGRNO,INSURE_FILE_STS,ARGUE_DEAL
+	</sql>
+	
+	<sql id="selectToDoWhere">
+		where 1=1
+		<if test="userId != null and userId.trim() != ''">
+			and (n.ASSIGNEE=#{userId,jdbcType=VARCHAR} OR n.CANDIDATE=#{userId,jdbcType=VARCHAR})
+		</if>
+		and m.INCOM_NO=n.BUSINESS_KEY_IN
+		<if test="ciNo != null and ciNo.trim() != ''">
+			and CI_NO = #{ciNo}
+		</if>
+		<if test="ciNm != null and ciNm.trim() != ''">
+			and CI_NM like '%'||#{ciNm}||'%'
+		</if>
+		<if test="incomNo != null and incomNo.trim() != ''">
+			and INCOM_NO = #{incomNo}
+		</if>
+		<if test="curStep != null and curStep.trim() != ''">
+			and CUR_STEP = #{curStep}
+		</if>
+		<if test="insurNo != null and insurNo.trim() != ''">
+			and INSUR_NO = #{insurNo}
+		</if>
+		<if test="contractNo != null and contractNo.trim() != ''">
+			and CONTRACT_NO = #{contractNo}
+		</if>
+		<if test="tmTyp !=null and tmTyp.trim()!=''">
+			<if test="tmTyp =='week'">
+			and (Select to_char(sysdate,'ww') from dual) = 
+			(to_char(to_date(CREATE_TIME,'yyyy-mm-dd hh24:mi:ss'),'ww') )
+			</if>
+			<if test="tmTyp =='month'">
+			and (Select to_char(sysdate,'mm') from dual) = 
+			(to_char(to_date(CREATE_TIME,'yyyy-mm-dd hh24:mi:ss'),'mm') )
+			</if>
+		</if>
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+		<include refid="Base_Column_List" />
+    from LOAD_INCOM_ORD
+    where INCOM_NO = #{incomNo,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectToDoByUserId"  resultMap="ViewResultMap">
+    	select q.* from (select rownum rn,w.* from (select  m.* , n.*
+        from LOAD_INCOM_ORD m,V_TASKLIST n
+		<include refid="selectToDoWhere"/>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by START_TM desc
+			</otherwise>
+		</choose>
+        )w)q
+		<if test="offset != null and limit != null">
+			where rn between  #{offset} and  #{limit}	
+		</if>
+	</select>
+	<select id="queryToDoTotalByUserId" resultType="int">
+        select count(m.INCOM_NO) from LOAD_INCOM_ORD m,V_TASKLIST n
+		<include refid="selectToDoWhere"/>
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from LOAD_INCOM_ORD
+    where INCOM_NO = #{incomNo,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.brh.channel.web.entity.LoadIncomOrdEntity">
+    insert into LOAD_INCOM_ORD (INCOM_NO, CI_NO, PROD_NO, 
+      PROD_NM, CONTRACT_NO, LOAD_AMT, 
+      REPAY_WAY, LOAD_RATE, LOAD_TM1, LOAD_CYCLE1,
+      INSUR_NO, LEND_NO, CREDIT_AMT, 
+      INSUR_AMT, LOAD_TM2, LOAD_CYCLE2,PROC_INST_ID, 
+      CUR_STEP, STATUS, START_TM, 
+      END_TM, OPER_ID, CREATE_TM, 
+      TIMESTAMP, CI_NM, CI_TYP , AGENCY_ID,AGENCY_NM,INSUR_FEE,REMARK
+      )
+    values (#{incomNo,jdbcType=VARCHAR}, #{ciNo,jdbcType=VARCHAR}, #{prodNo,jdbcType=VARCHAR}, 
+      #{prodNm,jdbcType=VARCHAR}, #{contractNo,jdbcType=VARCHAR}, #{loadAmt,jdbcType=DECIMAL}, 
+      #{repayWay,jdbcType=VARCHAR}, #{loadRate,jdbcType=DECIMAL}, #{loadTm1,jdbcType=VARCHAR}, #{loadCycle1,jdbcType=VARCHAR},
+      #{insurNo,jdbcType=VARCHAR}, #{lendNo,jdbcType=VARCHAR}, #{creditAmt,jdbcType=DECIMAL}, 
+      #{insurAmt,jdbcType=DECIMAL}, #{loadTm2,jdbcType=VARCHAR},  #{loadCycle2,jdbcType=VARCHAR}, #{procInstId,jdbcType=VARCHAR}, 
+      #{curStep,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{startTm,jdbcType=VARCHAR}, 
+      #{endTm,jdbcType=VARCHAR}, #{operId,jdbcType=VARCHAR}, #{createTm,jdbcType=VARCHAR}, 
+      #{timestamp,jdbcType=VARCHAR}, #{ciNm,jdbcType=VARCHAR}, #{ciTyp,jdbcType=VARCHAR}, #{agencyId,jdbcType=VARCHAR}, #{agencyNm,jdbcType=VARCHAR}, #{insurFee,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}
+      )
+	</insert>
+	<insert id="insertSelective" parameterType="com.brh.channel.web.entity.LoadIncomOrdEntity">
+		insert into LOAD_INCOM_ORD
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="incomNo != null">
+				INCOM_NO,
+			</if>
+			<if test="ciNo != null">
+				CI_NO,
+			</if>
+			<if test="prodNo != null">
+				PROD_NO,
+			</if>
+			<if test="prodNm != null">
+				PROD_NM,
+			</if>
+			<if test="contractNo != null">
+				CONTRACT_NO,
+			</if>
+			<if test="loadAmt != null">
+				LOAD_AMT,
+			</if>
+			<if test="repayWay != null">
+				REPAY_WAY,
+			</if>
+			<if test="loadRate != null">
+				LOAD_RATE,
+			</if>
+			<if test="loadTm1 != null">
+				LOAD_TM1,
+			</if>
+			<if test="loadCycle1 != null">
+				LOAD_CYCLE1,
+			</if>
+			<if test="insurNo != null">
+				INSUR_NO,
+			</if>
+			<if test="lendNo != null">
+				LEND_NO,
+			</if>
+			<if test="creditAmt != null">
+				CREDIT_AMT,
+			</if>
+			<if test="insurAmt != null">
+				INSUR_AMT,
+			</if>
+			<if test="loadTm2 != null">
+				LOAD_TM2,
+			</if>
+			<if test="loadCycle2 != null">
+				LOAD_CYCLE2,
+			</if>
+			<if test="procInstId != null">
+				PROC_INST_ID,
+			</if>
+			<if test="curStep != null">
+				CUR_STEP,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="startTm != null">
+				START_TM,
+			</if>
+			<if test="endTm != null">
+				END_TM,
+			</if>
+			<if test="operId != null">
+				OPER_ID,
+			</if>
+			<if test="createTm != null">
+				CREATE_TM,
+			</if>
+			<if test="timestamp != null">
+				TIMESTAMP,
+			</if>
+			<if test="ciNm != null">
+				CI_NM,
+			</if>
+			<if test="ciTyp != null">
+				CI_TYP,
+			</if>
+			<if test="agencyId != null">
+				AGENCY_ID,
+			</if>
+			<if test="agencyNm != null">
+				AGENCY_NM,
+			</if>
+			<if test="insurFee != null">
+				INSUR_FEE,
+			</if>
+			<if test="remark != null">
+				REMARK,
+			</if>
+			<if test="accountManager != null">
+				ACCOUNT_MANAGER,
+			</if>
+			<if test="loanCardNo != null">
+				LOAN_CARD_NO,
+			</if>
+			<if test="insureBeginTm != null">
+				INSURE_BEGIN_TM,
+			</if>
+			<if test="insureEndTm != null">
+				INSURE_END_TM,
+			</if>
+			<if test="insureFeeRate != null">
+				INSURE_FEE_RATE,
+			</if>
+			<if test="insureProd != null">
+				INSURE_PROD,
+			</if>
+			<if test="insureProdNm != null">
+				INSURE_PROD_NM,
+			</if>
+			<if test="absExcess != null">
+				ABS_EXCESS,
+			</if>
+			<if test="insurePayTyp != null">
+				INSURE_PAY_TYP,
+			</if>
+			<if test="outAgencyId != null">
+				OUT_AGENCY_ID,
+			</if>
+			<if test="specialAgr != null">
+				SPECIAL_AGR,
+			</if>
+			<if test="underwriteUser != null">
+				UNDERWRITE_USER,
+			</if>
+			<if test="underwriteTm != null">
+				UNDERWRITE_TM,
+			</if>
+			<if test="paySts != null">
+				PAY_STS,
+			</if>
+			<if test="issueSts != null">
+				ISSUE_STS,
+			</if>
+			<if test="payInsureAmt != null">
+				PAY_INSURE_AMT,
+			</if>
+			<if test="payInsureTm != null">
+				PAY_INSURE_TM,
+			</if>
+			<if test="insureAccountMgr != null">
+				INSURE_ACCOUNT_MGR,
+			</if>
+			<if test="insureAccountMgrno != null">
+				INSURE_ACCOUNT_MGRNO,
+			</if>
+			<if test="insureFileSts != null">
+				INSURE_FILE_STS,
+			</if>
+			<if test="argueDeal != null">
+				ARGUE_DEAL,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="incomNo != null">
+				#{incomNo,jdbcType=VARCHAR},
+			</if>
+			<if test="ciNo != null">
+				#{ciNo,jdbcType=VARCHAR},
+			</if>
+			<if test="prodNo != null">
+				#{prodNo,jdbcType=VARCHAR},
+			</if>
+			<if test="prodNm != null">
+				#{prodNm,jdbcType=VARCHAR},
+			</if>
+			<if test="contractNo != null">
+				#{contractNo,jdbcType=VARCHAR},
+			</if>
+			<if test="loadAmt != null">
+				#{loadAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="repayWay != null">
+				#{repayWay,jdbcType=VARCHAR},
+			</if>
+			<if test="loadRate != null">
+				#{loadRate,jdbcType=DECIMAL},
+			</if>
+			<if test="loadTm1 != null">
+				#{loadTm1,jdbcType=VARCHAR},
+			</if>
+			<if test="loadCycle1 != null">
+				#{loadCycle1,jdbcType=VARCHAR},
+			</if>
+			<if test="insurNo != null">
+				#{insurNo,jdbcType=VARCHAR},
+			</if>
+			<if test="lendNo != null">
+				#{lendNo,jdbcType=VARCHAR},
+			</if>
+			<if test="creditAmt != null">
+				#{creditAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="insurAmt != null">
+				#{insurAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="loadTm2 != null">
+				#{loadTm2,jdbcType=VARCHAR},
+			</if>
+			<if test="loadCycle2 != null">
+				#{loadCycle2,jdbcType=VARCHAR},
+			</if>
+			<if test="procInstId != null">
+				#{procInstId,jdbcType=VARCHAR},
+			</if>
+			<if test="curStep != null">
+				#{curStep,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="startTm != null">
+				#{startTm,jdbcType=VARCHAR},
+			</if>
+			<if test="endTm != null">
+				#{endTm,jdbcType=VARCHAR},
+			</if>
+			<if test="operId != null">
+				#{operId,jdbcType=VARCHAR},
+			</if>
+			<if test="createTm != null">
+				#{createTm,jdbcType=VARCHAR},
+			</if>
+			<if test="timestamp != null">
+				#{timestamp,jdbcType=VARCHAR},
+			</if>
+			<if test="ciNm != null">
+				#{ciNm,jdbcType=VARCHAR},
+			</if>
+			<if test="ciTyp != null">
+				#{ciTyp,jdbcType=VARCHAR},
+			</if>
+			<if test="agencyId != null">
+				#{agencyId,jdbcType=VARCHAR},
+			</if>
+			<if test="agencyNm != null">
+				#{agencyNm,jdbcType=VARCHAR},
+			</if>
+			<if test="insurFee != null">
+				#{insurFee,jdbcType=DECIMAL},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="accountManager != null">
+				#{accountManager,jdbcType=VARCHAR},
+			</if>
+			<if test="loanCardNo != null">
+				#{loanCardNo,jdbcType=VARCHAR},
+			</if>
+			<if test="insureBeginTm != null">
+				#{insureBeginTm,jdbcType=VARCHAR},
+			</if>
+			<if test="insureEndTm != null">
+				#{insureEndTm,jdbcType=VARCHAR},
+			</if>
+			<if test="insureFeeRate != null">
+				#{insureFeeRate,jdbcType=DECIMAL},
+			</if>
+			<if test="insureProd != null">
+				#{insureProd,jdbcType=VARCHAR},
+			</if>
+			<if test="insureProdNm != null">
+				#{insureProdNm,jdbcType=VARCHAR},
+			</if>
+			<if test="absExcess != null">
+				#{absExcess,jdbcType=DECIMAL},
+			</if>
+			<if test="insurePayTyp != null">
+				#{insurePayTyp,jdbcType=VARCHAR},
+			</if>
+			<if test="outAgencyId != null">
+				#{outAgencyId,jdbcType=VARCHAR},
+			</if>
+			<if test="specialAgr != null">
+				#{specialAgr,jdbcType=VARCHAR},
+			</if>
+			<if test="underwriteUser != null">
+				#{underwriteUser,jdbcType=VARCHAR},
+			</if>
+			<if test="underwriteTm != null">
+				#{underwriteTm,jdbcType=VARCHAR},
+			</if>
+			<if test="paySts != null">
+				#{paySts,jdbcType=VARCHAR},
+			</if>
+			<if test="issueSts != null">
+				#{issueSts,jdbcType=VARCHAR},
+			</if>
+			<if test="payInsureAmt != null">
+				#{payInsureAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="payInsureTm != null">
+				#{payInsureTm,jdbcType=VARCHAR},
+			</if>
+			<if test="insureAccountMgr != null">
+				#{insureAccountMgr,jdbcType=VARCHAR},
+			</if>
+			<if test="insureAccountMgrno != null">
+				#{insureAccountMgrno,jdbcType=VARCHAR},
+			</if>
+			<if test="insureFileSts != null">
+				#{insureFileSts,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.brh.channel.web.entity.LoadIncomOrdEntity">
+		update LOAD_INCOM_ORD
+		<set>
+			<if test="ciNo != null">
+				CI_NO = #{ciNo,jdbcType=VARCHAR},
+			</if>
+			<if test="prodNo != null">
+				PROD_NO = #{prodNo,jdbcType=VARCHAR},
+			</if>
+			<if test="prodNm != null">
+				PROD_NM = #{prodNm,jdbcType=VARCHAR},
+			</if>
+			<if test="contractNo != null">
+				CONTRACT_NO = #{contractNo,jdbcType=VARCHAR},
+			</if>
+			<if test="loadAmt != null">
+				LOAD_AMT = #{loadAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="repayWay != null">
+				REPAY_WAY = #{repayWay,jdbcType=VARCHAR},
+			</if>
+			<if test="loadRate != null">
+				LOAD_RATE = #{loadRate,jdbcType=DECIMAL},
+			</if>
+			<if test="loadTm1 != null">
+				LOAD_TM1 = #{loadTm1,jdbcType=VARCHAR},
+			</if>
+			<if test="loadCycle1 != null">
+				LOAD_CYCLE1 = #{loadCycle1,jdbcType=VARCHAR},
+			</if>
+			<if test="insurNo != null">
+				INSUR_NO = #{insurNo,jdbcType=VARCHAR},
+			</if>
+			<if test="lendNo != null">
+				LEND_NO = #{lendNo,jdbcType=VARCHAR},
+			</if>
+			<if test="creditAmt != null">
+				CREDIT_AMT = #{creditAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="insurAmt != null">
+				INSUR_AMT = #{insurAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="loadTm2 != null">
+				LOAD_TM2 = #{loadTm2,jdbcType=VARCHAR},
+			</if>
+			<if test="loadCycle2 != null">
+				LOAD_CYCLE2 = #{loadCycle2,jdbcType=VARCHAR},
+			</if>
+			<if test="procInstId != null">
+				PROC_INST_ID = #{procInstId,jdbcType=VARCHAR},
+			</if>
+			<if test="curStep != null">
+				CUR_STEP = #{curStep,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				STATUS = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="startTm != null">
+				START_TM = #{startTm,jdbcType=VARCHAR},
+			</if>
+			<if test="endTm != null">
+				END_TM = #{endTm,jdbcType=VARCHAR},
+			</if>
+			<if test="operId != null">
+				OPER_ID = #{operId,jdbcType=VARCHAR},
+			</if>
+			<if test="createTm != null">
+				CREATE_TM = #{createTm,jdbcType=VARCHAR},
+			</if>
+			<if test="timestamp != null">
+				TIMESTAMP = #{timestamp,jdbcType=VARCHAR},
+			</if>
+			<if test="ciNm != null">
+				CI_NM = #{ciNm,jdbcType=VARCHAR},
+			</if>
+			<if test="ciTyp != null">
+				CI_TYP = #{ciTyp,jdbcType=VARCHAR},
+			</if>
+			<if test="agencyId != null">
+				AGENCY_ID = #{agencyId,jdbcType=VARCHAR},
+			</if>
+			<if test="agencyNm != null">
+				AGENCY_NM = #{agencyNm,jdbcType=VARCHAR},
+			</if>
+			<if test="insurFee != null">
+				INSUR_FEE = #{insurFee,jdbcType=DECIMAL},
+			</if>
+			<if test="remark != null">
+				REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="accountManager != null">
+				ACCOUNT_MANAGER = #{accountManager,jdbcType=VARCHAR},
+			</if>
+			<if test="loanCardNo != null">
+				LOAN_CARD_NO = #{loanCardNo,jdbcType=VARCHAR},
+			</if>
+			<if test="insureBeginTm != null">
+				INSURE_BEGIN_TM = #{insureBeginTm,jdbcType=VARCHAR},
+			</if>
+			<if test="insureEndTm != null">
+				INSURE_END_TM = #{insureEndTm,jdbcType=VARCHAR},
+			</if>
+			<if test="insureFeeRate != null">
+				INSURE_FEE_RATE = #{insureFeeRate,jdbcType=DECIMAL},
+			</if>
+			<if test="insureProd != null">
+				INSURE_PROD = #{insureProd,jdbcType=VARCHAR},
+			</if>
+			<if test="insureProdNm != null">
+				INSURE_PROD_NM = #{insureProdNm,jdbcType=VARCHAR},
+			</if>
+			<if test="absExcess != null">
+				ABS_EXCESS = #{absExcess,jdbcType=DECIMAL},
+			</if>
+			<if test="insurePayTyp != null">
+				INSURE_PAY_TYP = #{insurePayTyp,jdbcType=VARCHAR},
+			</if>
+			<if test="outAgencyId != null">
+				OUT_AGENCY_ID = #{outAgencyId,jdbcType=VARCHAR},
+			</if>
+			<if test="specialAgr != null">
+				SPECIAL_AGR = #{specialAgr,jdbcType=VARCHAR},
+			</if>
+			<if test="underwriteUser != null">
+				UNDERWRITE_USER = #{underwriteUser,jdbcType=VARCHAR},
+			</if>
+			<if test="underwriteTm != null">
+				UNDERWRITE_TM = #{underwriteTm,jdbcType=VARCHAR},
+			</if>
+			<if test="paySts != null">
+				PAY_STS = #{paySts,jdbcType=VARCHAR},
+			</if>
+			<if test="issueSts != null">
+				ISSUE_STS = #{issueSts,jdbcType=VARCHAR},
+			</if>
+			<if test="payInsureAmt != null">
+				PAY_INSURE_AMT = #{payInsureAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="payInsureTm != null">
+				PAY_INSURE_TM = #{payInsureTm,jdbcType=VARCHAR},
+			</if>
+			<if test="insureAccountMgr != null"> 
+				INSURE_ACCOUNT_MGR = #{insureAccountMgr,jdbcType=VARCHAR},
+			</if>
+			<if test="insureAccountMgrno != null">
+				INSURE_ACCOUNT_MGRNO = #{insureAccountMgrno,jdbcType=VARCHAR},
+			</if>
+			<if test="insureFileSts != null">
+				INSURE_FILE_STS = #{insureFileSts,jdbcType=VARCHAR},
+			</if>
+			<if test="argueDeal != null">
+				ARGUE_DEAL = #{argueDeal,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where INCOM_NO = #{incomNo,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.brh.channel.web.entity.LoadIncomOrdEntity">
+    update LOAD_INCOM_ORD
+    set CI_NO = #{ciNo,jdbcType=VARCHAR},
+      PROD_NO = #{prodNo,jdbcType=VARCHAR},
+      PROD_NM = #{prodNm,jdbcType=VARCHAR},
+      CONTRACT_NO = #{contractNo,jdbcType=VARCHAR},
+      LOAD_AMT = #{loadAmt,jdbcType=DECIMAL},
+      REPAY_WAY = #{repayWay,jdbcType=VARCHAR},
+      LOAD_RATE = #{loadRate,jdbcType=DECIMAL},
+      LOAD_TM1 = #{loadTm1,jdbcType=VARCHAR},
+      LOAD_CYCLE1 = #{loadCycle1,jdbcType=VARCHAR},
+      INSUR_NO = #{insurNo,jdbcType=VARCHAR},
+      LEND_NO = #{lendNo,jdbcType=VARCHAR},
+      CREDIT_AMT = #{creditAmt,jdbcType=DECIMAL},
+      INSUR_AMT = #{insurAmt,jdbcType=DECIMAL},
+      LOAD_TM2 = #{loadTm2,jdbcType=VARCHAR},
+      LOAD_CYCLE2 = #{loadCycle2,jdbcType=VARCHAR},
+      PROC_INST_ID = #{procInstId,jdbcType=VARCHAR},
+      CUR_STEP = #{curStep,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      START_TM = #{startTm,jdbcType=VARCHAR},
+      END_TM = #{endTm,jdbcType=VARCHAR},
+      OPER_ID = #{operId,jdbcType=VARCHAR},
+      CREATE_TM = #{createTm,jdbcType=VARCHAR},
+      TIMESTAMP = #{timestamp,jdbcType=VARCHAR},
+      CI_NM = #{ciNm,jdbcType=VARCHAR},
+      CI_TYP = #{ciTyp,jdbcType=VARCHAR},
+      AGENCY_ID = #{agencyId,jdbcType=VARCHAR},
+      AGENCY_NM = #{agencyNm,jdbcType=VARCHAR},
+      INSUR_FEE = #{insurFee,jdbcType=DECIMAL},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where INCOM_NO = #{incomNo,jdbcType=VARCHAR}
+	</update>
+
+	<select id="queryObject" resultType="com.brh.channel.web.entity.LoadIncomOrdEntity">
+		select <include refid="Base_Column_List" /> from LOAD_INCOM_ORD where INCOM_NO = #{value}
+	</select>
+	
+ 	<select id="queryList" resultType="com.brh.channel.web.entity.LoadIncomOrdEntity">
+	select * from (
+	select rownum rn, m.* from (
+	select LOAD_INCOM_ORD.* from LOAD_INCOM_ORD
+	<where>
+		1=1
+		<if test="curStep != null and curStep.trim() != ''">
+			and CUR_STEP = #{curStep}
+		</if>
+		<if test="ciNo != null and ciNo.trim() != ''">
+			and CI_NO = #{ciNo}
+		</if>
+		<if test="ciNm != null and ciNm.trim() != ''">
+			and CI_NM like '%'||#{ciNm}||'%'
+		</if>
+		<if test="incomNo != null and incomNo.trim() != ''">
+			and INCOM_NO = #{incomNo}
+		</if>
+		<if test="insurNo != null and insurNo.trim() != ''">
+			and INSUR_NO like '%'||#{insurNo}||'%'
+		</if>
+		<if test="contractNo != null and contractNo.trim() != ''">
+			and CONTRACT_NO like '%'||#{contractNo}||'%'
+		</if>
+		<if test="agencyNm != null and agencyNm.trim() != ''">
+			and AGENCY_NM = #{agencyNm}
+		</if>
+		<if test="agencyId != null and agencyId.trim() != ''">
+			and AGENCY_ID = #{agencyId}
+		</if>
+		<if test="remark != null and remark.trim() != ''">
+			and REMARK like '%'||#{remark}||'%'
+		</if>
+	</where>
+	<choose>
+		<when test="sidx != null and sidx.trim() != ''">
+			order by ${sidx} ${order}
+		</when>
+		<otherwise>
+			order by TIMESTAMP desc
+		</otherwise>
+	</choose>
+	)m
+	)n
+	<if test="offset != null and limit != null">
+		where n.rn between #{offset} and #{limit}
+	</if>
+	</select>
+	
+	<select id="queryTotal" resultType="int">
+    select count(*) from LOAD_INCOM_ORD
+		<where>1=1
+			<if test="curStep != null and curStep.trim() != ''">
+				and CUR_STEP = #{curStep}
+			</if>
+			<if test="ciNo != null and ciNo.trim() != ''">
+				and CI_NO = #{ciNo}
+			</if>
+			<if test="ciNm != null and ciNm.trim() != ''">
+				and CI_NM like '%'||#{ciNm}||'%'
+			</if>
+			<if test="incomNo != null and incomNo.trim() != ''">
+                and INCOM_NO = #{incomNo}
+			</if>
+			<if test="insurNo != null and insurNo.trim() != ''">
+				and INSUR_NO like '%'||#{insurNo}||'%'
+			</if>
+			<if test="contractNo != null and contractNo.trim() != ''">
+				and CONTRACT_NO like '%'||#{contractNo}||'%'
+			</if>
+			<if test="agencyNm != null and agencyNm.trim() != ''">
+				and AGENCY_NM = #{agencyNm}
+			</if>
+			<if test="agencyId != null and agencyId.trim() != ''">
+				and AGENCY_ID = #{agencyId}
+			</if>
+			<if test="remark != null and remark.trim() != ''">
+				and REMARK like '%'||#{remark}||'%'
+			</if>
+		</where>
+	</select>
+	
+	
+	<select id="queryListByCurStep" resultType="com.brh.channel.web.entity.LoadIncomOrdEntity">
+    select * 
+    	from ( select rownum rn,m.*
+    		from (	select LOAD_INCOM_ORD.* 
+    			from LOAD_INCOM_ORD
+		<where>1=1 and cur_step != '0'
+		<if test="ciNo != null and ciNo.trim() != ''">
+			  and CI_NO = #{ciNo}
+			</if>
+			<if test="ciNm != null and ciNm.trim() != ''">
+			  and CI_NM like '%'||#{ciNm}||'%'
+			</if>
+			<if test="incomNo != null and incomNo.trim() != ''">
+			  and INCOM_NO like '%'||#{incomNo}||'%' 
+			</if>
+			<if test="insurNo != null and insurNo.trim() != ''">
+			  and INSUR_NO like '%'||#{insurNo}||'%' 
+			</if>
+			<if test="contractNo != null and contractNo.trim() != ''">
+			  and CONTRACT_NO like '%'||#{contractNo}||'%' 
+			</if>
+			<if test="agencyNm != null and agencyNm.trim() != ''">
+			  and AGENCY_NM = #{agencyNm}
+			</if>
+			<if test="agencyId != null and agencyId.trim() != ''">
+			  and AGENCY_ID = #{agencyId}
+			</if>
+			<if test="remark != null and remark.trim() != ''">
+			  and REMARK like '%'||#{remark}||'%'
+			</if>
+		</where>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+        order by ${sidx} ${order}
+			</when>
+			<otherwise>
+        order by CREATE_TM desc
+			</otherwise>
+		</choose>)m
+		)
+		<where>
+			<if test="offset != null and limit != null">
+	      	  and rn between  #{offset} and  #{limit}
+			</if>
+		</where>
+	</select>
+
+	<select id="queryTotalByCurStep" resultType="int">
+	 select count(*)
+		   from  LOAD_INCOM_ORD
+		<where>1=1 and cur_step != '0'
+			<if test="ciNo != null and ciNo.trim() != ''">
+			  and CI_NO = #{ciNo}
+			</if>
+			<if test="ciNm != null and ciNm.trim() != ''">
+			  and CI_NM like '%'||#{ciNm}||'%'
+			</if>
+			<if test="incomNo != null and incomNo.trim() != ''">
+			  and INCOM_NO = #{incomNo}
+			</if>
+			<if test="insurNo != null and insurNo.trim() != ''">
+			  and INSUR_NO = #{insurNo}
+			</if>
+			<if test="contractNo != null and contractNo.trim() != ''">
+			  and CONTRACT_NO = #{contractNo}
+			</if>
+			<if test="agencyNm != null and agencyNm.trim() != ''">
+			  and AGENCY_NM = #{agencyNm}
+			</if>
+			<if test="agencyId != null and agencyId.trim() != ''">
+			  and AGENCY_ID = #{agencyId}
+			</if>
+			<if test="remark != null and remark.trim() != ''">
+			  and REMARK like '%'||#{remark}||'%'
+			</if>
+		</where>
+	</select>
+	
+	<delete id="deleteBatch">
+    delete from LOAD_INCOM_ORD where INCOM_NO in
+		<foreach item="incomNo" collection="array" open="(" separator="," close=")">
+      #{incomNo}
+		</foreach>
+	</delete>
+	
+	
+	<resultMap id="ViewBookMap" type="com.brh.channel.web.entity.StandingBookEntity">
+		<result column="INCOM_NO" jdbcType="VARCHAR" property="incomNo" />
+		<result column="CONTRACT_NO" jdbcType="VARCHAR" property="contractNo" />
+		<result column="AGENCY_NM" jdbcType="VARCHAR" property="agencyNm" />
+		<result column="STRUCT_TYP" jdbcType="VARCHAR" property="structTyp" />
+		<result column="CI_NM" jdbcType="VARCHAR" property="ciNm" />
+		<result column="LICENCE" jdbcType="VARCHAR" property="licence" />
+		<result column="TAX_NO" jdbcType="DECIMAL" property="taxNo" />
+		<result column="LEGAL_NM" jdbcType="VARCHAR" property="legalNm" />
+		<result column="LEGAL_TELE" jdbcType="DECIMAL" property="legalTele" />
+		<result column="CONTRACT_PER" jdbcType="VARCHAR" property="contactPer" />
+		<result column="CONTRACT_TELE" jdbcType="VARCHAR" property="contactTele" />
+		<result column="LOAD_AMT" jdbcType="DECIMAL" property="loadAmt" />
+		<result column="LEGAL_TELE" jdbcType="VARCHAR" property="legalTele" />
+		<result column="LOAD_TM1" jdbcType="VARCHAR" property="loadTm1" />
+		<result column="LOAD_CYCLE1" jdbcType="VARCHAR" property="loadCycle1" />
+		
+		<result column="VALUE_DATE" jdbcType="VARCHAR" property="valueDate" />
+		<result column="EXPIRY_DATE" jdbcType="VARCHAR" property="expiryDate" />
+		<result column="REPAY_DATE" jdbcType="VARCHAR" property="repayDate" />
+		<result column="REPAY_WAY" jdbcType="VARCHAR" property="repayWay" />
+		<result column="LOAD_RATE" jdbcType="VARCHAR" property="loadRate" />
+		<result column="STATUS" jdbcType="VARCHAR" property="status" />
+		<result column="INSUR_NO" jdbcType="VARCHAR" property="insurNo" />
+		<result column="INSUR_AMT" jdbcType="DECIMAL" property="insurAmt" />
+		<result column="PAY_INSUR_TM" jdbcType="VARCHAR" property="payInsureTm" />
+		<result column="LOAD_TM2" jdbcType="VARCHAR" property="loadTm2" />
+		<result column="LOAD_CYCLE2" jdbcType="VARCHAR" property="loadCycle2" />
+		<result column="INSUR_FEE" jdbcType="VARCHAR" property="insurFee" />	
+		<result column="INSURE_SERVICE_FEE" jdbcType="VARCHAR" property="depositFee" />
+		<result column="SERVICE_FEE1" jdbcType="VARCHAR" property="integralFee" />
+		<result column="SERVICE_FEE2" jdbcType="VARCHAR" property="capitalSideFee" />
+		<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+		
+		<result column="INSURE_BEGIN_TM" jdbcType="VARCHAR" property="insureBeginTm" />
+		<result column="INSURE_END_TM" jdbcType="VARCHAR" property="insureEndTm" />
+		<result column="INSURE_FEE_RATE" jdbcType="VARCHAR" property="insureFeeRate" />
+		<result column="ABS_EXCESS" jdbcType="VARCHAR" property="absExcess" />
+		<result column="UNDERWRITE_TM" jdbcType="VARCHAR" property="underwriteTm" />
+		<result column="PAY_STS" jdbcType="VARCHAR" property="paySts" />
+		<result column="ORG_CODE" jdbcType="VARCHAR" property="orgCode" />
+	</resultMap>
+	
+	<select id="selectStandingBook"  resultMap="ViewBookMap">
+    	select w.* from (select rownum rn,z.* from (select DISTINCT a.INCOM_NO,a.CONTRACT_NO,a.AGENCY_NM,a.CI_NM,d.STRUCT_TYP,c.LICENCE,c.TAX_NO,c.LEGAL_NM,c.LEGAL_TELE,c.CONTACT_PER,c.CONTACT_TELE,c.ORG_CODE,a.LOAD_AMT,
+a.LOAD_TM1,a.LOAD_CYCLE1,b.VALUE_DATE,b.REPAY_DATE,b.EXPIRY_DATE,a.REPAY_WAY,a.LOAD_RATE,a.STATUS,a.INSUR_NO,a.INSUR_AMT,a.PAY_INSURE_TM,a.INSUR_FEE,a.LOAD_TM2,a.LOAD_CYCLE2,b.INSURE_FEE as INSURE_SERVICE_FEE,b.SERVICE_FEE1,b.SERVICE_FEE2,a.REMARK
+ from LOAD_INCOM_ORD a, CONTRACT_INFO b,CUSTOMER_INFO c,PROD_INFO d 
+ 	where 1=1
+		<if test="contractNo != null and contractNo != ''">
+			   and a.CONTRACT_NO=#{contractNo}
+		</if>
+		<if test="licence != null and licence != ''">
+			   and c.LICENCE=#{licence}
+		</if>
+		<if test="ciNm != null and ciNm != ''">
+			   and a.CI_NM like '%'||#{ciNm}||'%'
+		</if>
+		<if test="agencyNm != null and agencyNm != ''">
+			   and a.AGENCY_NM like '%'||#{agencyNm}||'%'
+		</if>
+		<if test="agencyId != null and agencyId != ''">
+			   and a.AGENCY_ID = #{agencyId}
+		</if>
+		<if test="orgCode != null and orgCode != ''">
+			   and c.ORG_CODE = #{orgCode}
+		</if>
+ 	  and a.INCOM_NO=b.INCOM_NO and a.CI_NO=c.CI_NO and a.PROD_NO=d.PROD_NO and a.STATUS='00'
+	
+		<if test="startDay != null and startDay != ''">
+			   and (to_char(to_date(a.END_TM,'yyyy-mm-dd hh24:mi:ss'),'yyyymmdd'))&gt;=#{startDay}
+		</if>
+		<if test="endDay != null and endDay != ''">
+			   and (to_char(to_date(a.END_TM,'yyyy-mm-dd hh24:mi:ss'),'yyyymmdd'))&lt;=#{endDay}
+		</if>
+		
+ 	 	
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by a.INCOM_NO desc
+			</when>
+			<otherwise>
+				order by a.INCOM_NO desc
+			</otherwise>
+		</choose>
+        )z)w
+		<if test="offset != null and limit != null">
+			where rn between  #{offset} and  #{limit}	
+		</if>
+	</select>
+	
+	<select id="selectStandingBookTotal"  resultType="int">
+    	select count(*) from (select DISTINCT a.INCOM_NO,a.CONTRACT_NO,a.AGENCY_NM,a.CI_NM,d.STRUCT_TYP,c.LICENCE,c.TAX_NO,c.LEGAL_NM,c.LEGAL_TELE,c.CONTACT_PER,c.CONTACT_TELE,a.LOAD_AMT,
+a.LOAD_TM1,a.LOAD_CYCLE1,b.VALUE_DATE,b.REPAY_DATE,b.EXPIRY_DATE,a.REPAY_WAY,a.LOAD_RATE,a.STATUS,a.INSUR_NO,a.INSUR_AMT,a.PAY_INSURE_TM,a.INSUR_FEE,a.LOAD_TM2,a.LOAD_CYCLE2,b.INSURE_FEE as INSURE_SERVICE_FEE,b.SERVICE_FEE1,b.SERVICE_FEE2,a.REMARK
+ from LOAD_INCOM_ORD a, CONTRACT_INFO b,CUSTOMER_INFO c,PROD_INFO d 
+ 	where 1=1
+		<if test="contractNo != null and contractNo != ''">
+			   and a.CONTRACT_NO=#{contractNo}
+		</if>
+		<if test="licence != null and licence != ''">
+			   and c.LICENCE=#{licence}
+		</if>
+		<if test="ciNm != null and ciNm != ''">
+			   and a.CI_NM like '%'||#{ciNm}||'%'
+		</if>
+		<if test="agencyNm != null and agencyNm != ''">
+			   and a.AGENCY_NM like '%'||#{agencyNm}||'%'
+		</if>
+		<if test="agencyId != null and agencyId != ''">
+			   and a.AGENCY_ID = #{agencyId}
+		</if>
+ 	  and a.INCOM_NO=b.INCOM_NO and a.CI_NO=c.CI_NO and a.PROD_NO=d.PROD_NO and a.STATUS='00'
+
+		<if test="startDay != null and startDay != ''">
+			   and (to_char(to_date(END_TM,'yyyy-mm-dd hh24:mi:ss'),'yyyymmdd'))&gt;=#{startDay}
+		</if>
+		<if test="endDay != null and endDay != ''">
+			   and (to_char(to_date(END_TM,'yyyy-mm-dd hh24:mi:ss'),'yyyymmdd'))&lt;=#{endDay}
+		</if>
+		)m
+	</select>
+	
+
+	<!--保费代收台账-->
+	<select id="selectInsureFeeBook"  resultMap="ViewBookMap">
+    	select w.* from (select rownum rn,z.* from (select DISTINCT a.INCOM_NO,a.CONTRACT_NO,a.AGENCY_NM,a.CI_NM,d.STRUCT_TYP,c.LICENCE,c.TAX_NO,c.LEGAL_NM,c.LEGAL_TELE,c.CONTACT_PER,c.CONTACT_TELE,a.LOAD_AMT,
+a.LOAD_TM1,a.LOAD_CYCLE1,b.VALUE_DATE,b.REPAY_DATE,b.EXPIRY_DATE,a.REPAY_WAY,a.LOAD_RATE,a.STATUS,a.INSUR_NO,a.INSUR_AMT,a.PAY_INSURE_TM,a.INSUR_FEE,a.LOAD_TM2,a.LOAD_CYCLE2,b.INSURE_FEE as INSURE_SERVICE_FEE,b.SERVICE_FEE1,b.SERVICE_FEE2,a.REMARK,
+a.INSURE_BEGIN_TM,a.INSURE_END_TM,a.INSURE_FEE_RATE,a.ABS_EXCESS,a.UNDERWRITE_TM,a.PAY_STS
+  from LOAD_INCOM_ORD a, CONTRACT_INFO b,CUSTOMER_INFO c,PROD_INFO d 
+ 	where 1=1
+ 		<if test="incomNo != null and incomNo != ''">
+			   and a.INCOM_NO=#{incomNo}
+		</if>
+		<if test="contractNo != null and contractNo != ''">
+			   and a.CONTRACT_NO=#{contractNo}
+		</if>
+		<if test="licence != null and licence != ''">
+			   and c.LICENCE=#{licence}
+		</if>
+		<if test="ciNm != null and ciNm != ''">
+			   and a.CI_NM like '%'||#{ciNm}||'%'
+		</if>
+		<if test="insurePayTyp != null and insurePayTyp != ''">
+			   and a.INSURE_PAY_TYP =#{insurePayTyp}
+		</if>
+		<if test="paySts != null and paySts != ''">
+			   and a.PAY_STS = #{paySts}
+		</if>
+ 	  and a.INCOM_NO=b.INCOM_NO and a.CI_NO=c.CI_NO and a.PROD_NO=d.PROD_NO
+	
+		<if test="payStartDay != null and payStartDay != ''">
+			   and (to_char(to_date(a.PAY_INSURE_TM,'yyyy-mm-dd hh24:mi:ss'),'yyyymmdd'))&gt;=#{payStartDay}
+		</if>
+		<if test="payEndDay != null and payEndDay != ''">
+			   and (to_char(to_date(a.PAY_INSURE_TM,'yyyy-mm-dd hh24:mi:ss'),'yyyymmdd'))&lt;=#{payEndDay}
+		</if>
+		
+		<if test="underStartDay != null and underStartDay != ''">
+			   and (to_char(to_date(a.UNDERWRITE_TM,'yyyy-mm-dd hh24:mi:ss'),'yyyymmdd'))&gt;=#{underStartDay}
+		</if>
+		<if test="underEndDay != null and underEndDay != ''">
+			   and (to_char(to_date(a.UNDERWRITE_TM,'yyyy-mm-dd hh24:mi:ss'),'yyyymmdd'))&lt;=#{underEndDay}
+		</if>
+ 	 	
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by a.INCOM_NO desc
+			</when>
+			<otherwise>
+				order by a.INCOM_NO desc
+			</otherwise>
+		</choose>
+        )z)w
+		<if test="offset != null and limit != null">
+			where rn between  #{offset} and  #{limit}	
+		</if>
+	</select>
+	
+	<select id="selectInsureFeeBookTotal"  resultType="int">
+    	select count(*) from (select DISTINCT a.INCOM_NO,a.CONTRACT_NO,a.AGENCY_NM,a.CI_NM,d.STRUCT_TYP,c.LICENCE,c.TAX_NO,c.LEGAL_NM,c.LEGAL_TELE,c.CONTACT_PER,c.CONTACT_TELE,a.LOAD_AMT,
+a.LOAD_TM1,a.LOAD_CYCLE1,b.VALUE_DATE,b.REPAY_DATE,b.EXPIRY_DATE,a.REPAY_WAY,a.LOAD_RATE,a.STATUS,a.INSUR_NO,a.INSUR_AMT,a.PAY_INSURE_TM,a.INSUR_FEE,a.LOAD_TM2,a.LOAD_CYCLE2,b.INSURE_FEE as INSURE_SERVICE_FEE,b.SERVICE_FEE1,b.SERVICE_FEE2,a.REMARK,
+a.INSURE_BEGIN_TM,a.INSURE_END_TM,a.INSURE_FEE_RATE,a.ABS_EXCESS,a.UNDERWRITE_TM,a.PAY_STS
+ from LOAD_INCOM_ORD a, CONTRACT_INFO b,CUSTOMER_INFO c,PROD_INFO d 
+ 	where 1=1
+		<if test="incomNo != null and incomNo != ''">
+			   and a.INCOM_NO=#{incomNo}
+		</if>
+		<if test="contractNo != null and contractNo != ''">
+			   and a.CONTRACT_NO=#{contractNo}
+		</if>
+		<if test="licence != null and licence != ''">
+			   and c.LICENCE=#{licence}
+		</if>
+		<if test="ciNm != null and ciNm != ''">
+			   and a.CI_NM like '%'||#{ciNm}||'%'
+		</if>
+		<if test="insurePayTyp != null and insurePayTyp != ''">
+			   and a.INSURE_PAY_TYP =#{insurePayTyp}
+		</if>
+		<if test="paySts != null and paySts != ''">
+			   and a.PAY_STS = #{paySts}
+		</if>
+ 	  and a.INCOM_NO=b.INCOM_NO and a.CI_NO=c.CI_NO and a.PROD_NO=d.PROD_NO
+	
+		<if test="payStartDay != null and payStartDay != ''">
+			   and (to_char(to_date(a.PAY_INSURE_TM,'yyyy-mm-dd hh24:mi:ss'),'yyyymmdd'))&gt;=#{payStartDay}
+		</if>
+		<if test="payEndDay != null and payEndDay != ''">
+			   and (to_char(to_date(a.PAY_INSURE_TM,'yyyy-mm-dd hh24:mi:ss'),'yyyymmdd'))&lt;=#{payEndDay}
+		</if>
+		
+		<if test="underStartDay != null and underStartDay != ''">
+			   and (to_char(to_date(a.UNDERWRITE_TM,'yyyy-mm-dd hh24:mi:ss'),'yyyymmdd'))&gt;=#{underStartDay}
+		</if>
+		<if test="underEndDay != null and underEndDay != ''">
+			   and (to_char(to_date(a.UNDERWRITE_TM,'yyyy-mm-dd hh24:mi:ss'),'yyyymmdd'))&lt;=#{underEndDay}
+		</if>
+		)m
+	</select>
+	
+	<select id="queryPdfFilesInfo" parameterType="com.brh.channel.web.entity.LoadIncomOrdEntity"
+		resultType="com.brh.channel.web.entity.LoadIncomOrdEntity">
+		select
+		a.incom_no,a.insur_no from load_incom_ord a
+		where a.issue_sts =
+		#{issueSts} and a.insure_file_sts = #{insureFileSts}
+	</select>
+
+	<update id="updateInsureFileStsByIncomNo" parameterType="string">
+		update
+		load_incom_ord set insure_file_sts = '01' where incom_no = #{incomNo}
+	</update>
+	<select id="queryCiNoByIncomNo" parameterType="string" resultType="com.brh.channel.web.entity.LoadIncomOrdEntity">
+		select a.ci_no ,a.oper_id from load_incom_ord a where a.incom_no = #{incomNo}
+	</select>
+</mapper>

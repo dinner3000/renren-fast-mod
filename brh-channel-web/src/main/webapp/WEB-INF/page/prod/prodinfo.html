@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="${rc.contextPath}/statics/css/inputcommon.css">
+<title>合作机构管理</title> #parse("sys/header.html")
+</head>
+<body>
+	<div id="rrapp" v-cloak>
+
+		<div v-show="showList">
+			<div class="grid-btn">
+				<div class="form-group col-sm-2">
+					<input type="text" class="form-control" v-model="q.prodNo" @keyup.enter="query" placeholder="产品编号">
+				</div>
+				<div class="form-group col-sm-2">
+					<input type="text" class="form-control" v-model="q.prodNm" @keyup.enter="query" placeholder="产品名称">
+				</div>
+				<a class="btn btn-default" @click="query">查询</a>
+				#if($shiro.hasPermission("prod:prodinfo:create"))
+				<a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+				#end
+<!-- 				#if($shiro.hasPermission("prod:prodinfo:update")) -->
+<!-- 				<a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a> -->
+<!-- 				#end -->
+<!-- 				#if($shiro.hasPermission("prod:prodinfo:delete")) -->
+<!-- 				<a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a> -->
+<!-- 				#end -->
+			</div>
+		    <table id="jqGrid"></table>
+		    <div id="jqGridPager"></div>
+		</div>
+
+		<div v-show="!showList" class="panel panel-default" style="padding-bottom: 15px">
+			<div class="panel-heading">产品定义</div>
+			<form class="form-horizontal center-block">
+				<div class="grouplist">
+					<div class="form-group">
+						<div class="col-sm-2 control-label"><span>*</span>产品编号</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="prodNo" isvalid="yes" checkexpession="prodnum"
+								v-model.trim="prodInfo.prodNo" placeholder="产品编号" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label"><span>*</span>产品名称</div>
+						<div class="col-sm-10">
+								<input type="text" class="form-control" isvalid="yes" checkexpession="prodname"
+								v-model.trim="prodInfo.prodNm" placeholder="产品名称" />
+						</div>
+					</div>
+				</div>
+				<div class="grouplist">
+					<div class="form-group" style="position: relative; width: 588px;">
+						<div class="col-sm-2 control-label"><span>*</span>发行商</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control"
+								v-model="prodInfo.agencyInfo.agencyNm" 	style="cursor:pointer;width:270px" @click="getAgencyDialog" placeholder="发行商" isvalid="yes" checkexpession="notNull" readonly="readonly" />
+						</div>
+						<i class="fa fa-search" @click="getAgencyDialog" style="cursor: pointer;position: absolute;top: 10px;left: 395px;"></i>	
+					</div>
+					
+					<div class="form-group" style="margin-left: -17px">
+						<div class="col-sm-2 control-label"><span>*</span>利率</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" isvalid="yes" checkexpession="interest"
+								v-model.trim="prodInfo.prodRate" placeholder="利率" style="width:280px" />
+							<div class="price" style="width: 50px;text-align: right;
+							line-height: 34px; margin-left: 250px;margin-top: -34px">
+								%
+						    </div>
+						</div>
+					</div>
+				</div>
+				<div class="grouplist">	
+					<div class="form-group">
+						<div class="col-sm-2 control-label"><span>*</span>产品类型</div>
+						<div class="col-sm-10">
+							<select class="form-control" v-model="prodInfo.prodTyp" isvalid="yes" checkexpession="notNull">
+								<option value = "0" selected="true">车抵贷</option>
+								<option value = "1" selected="true">房抵贷</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label"><span>*</span>结构类型</div>
+						<div class="col-sm-10">
+							<select class="form-control" v-model="prodInfo.structTyp" isvalid="yes" checkexpession="notNull">
+								<option value = "01" selected="true">直接融资</option>
+								<option value = "02" selected="true">信托计划</option>
+								<option value = "03" selected="true">债权转让</option>
+								<option value = "04" selected="true">定向资管</option>
+								<option value = "05" selected="true">委托贷款</option>
+								<option value = "06" selected="true">其他</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="grouplist">	
+					<div class="form-group">
+						<div class="col-sm-2 control-label"><span>*</span>担保方式</div>
+						<div class="col-sm-10">
+							<select class="form-control" v-model="prodInfo.guaranteeTyp" isvalid="yes" checkexpession="notNull">
+								<option value = "01" selected="true">质押担保</option>
+								<option value = "02" selected="true">抵押担保</option>
+								<option value = "03" selected="true">个人担保</option>
+								<option value = "04" selected="true">法人担保</option>
+								<option value = "05" selected="true">担保公司担保</option>
+								<option value = "06" selected="true">分级产品</option>
+								<option value = "07" selected="true">其他</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="grouplist">	
+					<div class="form-group">
+						<div class="col-sm-2 control-label"><span>*</span>贷款期限</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" isvalid="yes" checkexpession="moneytime"
+								v-model.trim="prodInfo.repayTime" placeholder="贷款期限" style="width: 210px" />
+							<select class="form-control" v-model="prodInfo.repayCycle" style="width: 80px;margin-left: 220px;margin-top: -34px" isvalid="yes" checkexpession="notNull">
+								<option value = "D" selected="true">日</option>
+								<option value = "M" selected="true">月</option>
+								<option value = "Y" selected="true">年</option>
+						    </select>						
+						</div>											
+					</div>					
+					<div class="form-group">
+						<div class="col-sm-2 control-label"><span>*</span>还款方式</div>
+						<div class="col-sm-10">
+							<select class="form-control" v-model="prodInfo.repayWay" isvalid="yes" checkexpession="notNull">
+								<option value = "0" selected="true">等额本金</option>
+								<option value = "1" selected="true">等额本息</option>
+								<option value = "2" selected="true">一次性还本付息</option>
+								<option value = "3" selected="true">月度结息，到期还本</option>
+								<option value = "4" selected="true">季度结息，到期还本</option>
+								<option value = "5" selected="true">其他</option>
+						    </select>
+						</div>
+					</div>
+				</div>
+				<div class="grouplist">	
+					<div class="form-group">
+						<div class="col-sm-2 control-label"><span>*</span>最低贷款金额</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" isvalid="yes" checkexpession="insurancemoney"
+								v-model.trim="prodInfo.loadMin" placeholder=" " style="width: 250px"/>
+							<div class="price" style="width: 80px;text-align: right;
+							line-height: 34px; margin-left: 220px;margin-top: -34px">
+								(万元)
+						    </div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label"><span>*</span>最高贷款金额</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" isvalid="yes" checkexpession="insurancemoney"
+								v-model.trim="prodInfo.loadMax" placeholder=" " style="width: 250px;" />
+							<div class="price" style="width: 80px;text-align: right;
+							line-height: 34px; margin-left: 220px;margin-top: -34px">
+								(万元)
+						    </div>	
+						</div>
+					</div>
+				</div>				
+			</form>
+			<div class="input-btn">
+				<div class="col-sm-2 control-label"></div>
+				<input id="saveOrUpdateBtns" type="button" class="btn btn-primary" @click="saveOrUpdate"
+					value="保存" /> &nbsp;&nbsp;
+				<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+			</div>
+			<!-- <div class="input-btn" style="margin-bottom: 20px">
+				<div class="col-sm-2 control-label"></div>
+				<input type="button" id="saveOrUpdateBtns" class="btn btn-primary" @click="saveOrUpdate" value="保存" /> &nbsp;&nbsp;
+				<input type="button" class="btn btn-warning" @click="reload" value="返回" />
+			</div> -->
+		</div>
+		
+	</div>
+	<script style="">
+    operateDetail = function (prodId,prodNo) {
+        var abandonHtml ='<a href="#" onclick="vm.detail('+prodId+')">'+prodNo+'</a>';
+        return abandonHtml ;
+    }
+	</script>
+	<script type="text/javascript">
+	operateProd = function (prodId,prodNm,prodSts) {
+	var abandonHtml="";
+
+		if(prodSts=='草稿'){
+			prodSts='0';
+		 abandonHtml = '#if($shiro.hasPermission("prod:prodinfo:update"))'
+			+ '<a href="#" onclick="vm.update('+prodId+',\''+prodNm+'\','+prodSts+',\'编辑\')">编辑</a>&nbsp;&nbsp;' + '#end'
+			+ '#if($shiro.hasPermission("prod:prodinfo:deleteProd"))'
+			+ '<a href="#" onclick="vm.deleteProd('+prodId+',\''+prodNm+'\','+prodSts+',\'删除\')">删除</a>&nbsp;&nbsp;' + '#end'
+			+ '#if($shiro.hasPermission("prod:prodinfo:updateProdSts"))'
+			+ '<a href="#" onclick="vm.endOrActive('+prodId+',\''+prodNm+'\','+prodSts+',\'生效\')">生效</a>' + '#end';
+		}else if('生效' == prodSts){
+			prodSts='1';
+			 abandonHtml = '#if($shiro.hasPermission("prod:prodinfo:updateProdSts"))'
+				+ '<a href="#" onclick="vm.endOrActive('+prodId+',\''+prodNm+'\','+prodSts+',\'失效\')">失效</a>' + '#end';
+		}else{
+			prodSts='2';
+		 abandonHtml = '#if($shiro.hasPermission("prod:prodinfo:updateProdSts"))'
+			+ '<a href="#" onclick="vm.endOrActive('+prodId+',\''+prodNm+'\','+prodSts+',\'生效\')">生效</a>' + '#end';
+		}
+		return abandonHtml;
+	}</script>
+	<script src="${rc.contextPath}/js/prod/prodinfo.js?_${date.systemTime}"></script>
+	<script src="${rc.contextPath}/js/common.js?_${date.systemTime}"></script>
+</body>
+</html>

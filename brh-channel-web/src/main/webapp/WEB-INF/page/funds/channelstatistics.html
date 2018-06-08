@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CHANNEL_STATISTICS</title>
+#parse("sys/header.html")
+
+<link rel="stylesheet"
+	href="${rc.contextPath}/statics/css/inputcommon.css">
+<link rel="stylesheet"
+	href="${rc.contextPath}/statics/css/examination.css">
+<style type="text/css">
+#rrapp .panel-heading {
+	width: 100%;
+	background-color: #3c8dbc;
+	color: #fff;
+	height: 40px;
+	line-height: 20px;
+	padding-left: 20px;
+}
+
+#rrapp .panel-heading .select_btn {
+	float: right;
+}
+
+#rrapp .panel-heading .select_btn a {
+	color: #fff;
+	text-decoration: none;
+	cursor: pointer;
+	margin-left: 5px;
+	border: 1px solid #fff;
+	padding: 4px 6px;
+	border-radius: 10px;
+}
+
+#rrapp .groupthree .col-sm-2 {
+	width: 20%;
+}
+.form-horizontal .form-group{
+	width:53%;
+}
+</style>
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+		<!-- <div class="grid-btn">
+			<div class="form-group col-sm-2">
+				<input type="text" class="form-control" v-model="q.key" @keyup.enter="query" placeholder="key">
+			</div>
+			
+			<a class="btn btn-default" @click="query">查询</a>
+			#if($shiro.hasPermission("channelstatistics:save"))
+			<a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+			#end
+			#if($shiro.hasPermission("channelstatistics:update"))
+			<a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+			#end
+			#if($shiro.hasPermission("channelstatistics:delete"))
+			<a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+			#end
+		</div> -->
+					<div class="grid-btn">
+
+				<div class="form-horizontal ">
+
+					<div class="groupthree">
+
+						<div class="form-group">
+							<div class="col-sm-2 control-label">起始日期:</div>
+							<div class="groupthreeinput">
+								<input type="text" class="form-control iLayDate" id="startDate"
+									placeholder="请选择" style="cursor: pointer; margin-right: 90px;"
+									readonly="readonly" isvalid="yes" checkexpession="notNull" />
+							</div>
+						</div>
+						<div class="form-group" style="margin-left: -228px;">
+							<div class="col-sm-2 control-label"
+								style="margin-right: 0px; width: 20%">结束日期:</div>
+							<div class="groupthreeinput">
+								<input type="text" class="form-control iLayDate" id="endDate"
+									readonly="readonly" placeholder="默认当天" style="cursor: pointer;"
+									isvalid="yes" checkexpession="notNull" />
+							</div>
+						</div>
+						<div style="margin-bottom: 0px">
+							<a class="btn btn-default" @click="query"
+								style="margin-left: -200px">查询</a>
+							<!-- #if($shiro.hasPermission("channel:regist:list")) <a
+								class="btn btn-primary" @click="getRegistList">&nbsp;注册数据统计</a>
+							#end #if($shiro.hasPermission("channel:invest:list")) <a
+								class="btn btn-primary" @click="getRegistList">&nbsp;出借数据统计</a>
+							#end
+ -->
+						</div>
+					</div>
+					<div class="groupthree" style="margin-left: 30px">
+							<div style="margin-bottom: 40px" >
+								#if($shiro.hasPermission("channel:regist:list")) <a
+									class="btn btn-primary" @click="getRegistList">&nbsp;注册数据统计</a>
+								#end #if($shiro.hasPermission("channel:invest:list")) <a
+									class="btn btn-primary" @click="getInvestList">&nbsp;出借数据统计</a>
+								#end #if($shiro.hasPermission("channel:invitee:list")) <a
+									class="btn btn-primary" @click="getInviteeList">&nbsp;被邀请人出借数据统计</a>
+								#end
+							</div>
+					</div>
+				</div>
+			</div>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+    
+    <div v-show="!showList" class="panel panel-default">
+		<div class="panel-heading">{{title}}</div>
+		<form class="form-horizontal">
+											<div class="form-group">
+			   	<div class="col-sm-2 control-label">REGISTNUM</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="channelStatistics.registnum" placeholder="REGISTNUM"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">INVESTNUM</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="channelStatistics.investnum" placeholder="INVESTNUM"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">CHANNEL</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="channelStatistics.channel" placeholder="CHANNEL"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">SUBITEMNAME</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="channelStatistics.subitemname" placeholder="SUBITEMNAME"/>
+			    </div>
+			</div>
+							<div class="form-group">
+				<div class="col-sm-2 control-label"></div> 
+				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+			</div>
+		</form>
+	</div>
+</div>
+	<div id="startDay" hidden=""></div>
+	<div id="endDay" hidden=""></div>
+	<script type="text/javascript">
+		$(function() {
+			bindDate();
+			var startDay = vm.q.startDay;
+			var endDay = vm.q.endDay;
+			$("#startDay").text(startDay);
+			$("#endDay").text(endDay);
+		});
+	</script>
+<script src="${rc.contextPath}/js/funds/channelstatistics.js?_${date.systemTime}"></script>
+<script src="${rc.contextPath}/statics/plugins/laydate/laydate.js?_${date.systemTime}"></script>
+</body>
+</html>

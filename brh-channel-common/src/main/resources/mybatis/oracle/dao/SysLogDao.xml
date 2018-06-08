@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.brh.channel.common.dao.SysLogDao">
+
+	<select id="queryObject" resultType="com.brh.channel.common.entity.SysLogEntity">
+		select * from sys_log where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.brh.channel.common.entity.SysLogEntity">
+		select * from(select T.* , rownum rn from(select * from  sys_log 
+		<where>
+			<if test="key != null and key.trim() != ''">
+				username like '%'||#{key}||'%' or operation like '%'||#{key}||'%'
+			</if>
+		</where>
+		order by id desc 
+	)T <![CDATA[ where rownum < ${limit} ]]>
+	)<![CDATA[ where rn > ${offset} ]]>
+	</select>
+	
+	<select id="queryTotal" resultType="int">
+		select count(*) from sys_log 
+		<where>
+			<if test="key != null and key.trim() != ''">
+				username like '%'||#{key}||'%' or operation like '%'||#{key}||'%'
+			</if>
+		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.brh.channel.common.entity.SysLogEntity">
+		<selectKey keyProperty="id" order="BEFORE" resultType="Long">
+			select SEQUENCE_ID.Nextval as ID from dual
+		</selectKey>
+		
+		insert into sys_log
+		(
+			id,
+			username, 
+			operation, 
+			method, 
+			params, 
+			ip, 
+			create_date
+		)
+		values
+		(
+			#{id},
+			#{username}, 
+			#{operation}, 
+			#{method}, 
+			#{params}, 
+			#{ip}, 
+			#{createDate,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.brh.channel.common.entity.SysLogEntity">
+		update sys_log 
+		<set>
+			<if test="username != null">username = #{username}, </if>
+			<if test="operation != null">operation = #{operation}, </if>
+			<if test="method != null">method = #{method}, </if>
+			<if test="params != null">params = #{params}, </if>
+			<if test="ip != null">ip = #{ip} </if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from sys_log where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from sys_log where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

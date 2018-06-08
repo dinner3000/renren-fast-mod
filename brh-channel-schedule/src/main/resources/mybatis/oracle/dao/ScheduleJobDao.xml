@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.brh.channel.schedule.dao.ScheduleJobDao">
+	<select id="queryObject" resultType="com.brh.channel.schedule.entity.ScheduleJobEntity" >
+		select * from schedule_job where job_id = #{value}
+	</select> 
+
+	 <select id="queryList" resultType="com.brh.channel.schedule.entity.ScheduleJobEntity">
+		select * from (select T.* , rownum rn from (select * from schedule_job 
+		<where> 1=1
+			<if test="beanName != null and beanName.trim() != ''">
+				and bean_name like '%'||#{beanName}||'%' 
+			</if>
+		</where>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by create_time desc
+			</otherwise>
+		</choose>
+	)T
+	<if test="limit != null">
+	<![CDATA[ where rownum <= ${limit} ]]>
+	</if>
+	)
+	<if test="offset != null">
+	<![CDATA[ where rn >= ${offset}]]>
+	</if>
+	</select>
+ 	<select id="queryTotal" resultType="int">
+		select count(1) from schedule_job 
+		<where>1=1
+			<if test="beanName != null and beanName.trim() != ''">
+				and bean_name like '%'||#{beanName}||'%' 
+			</if>
+		</where>
+	</select>
+	 
+	<insert id="save1" parameterType="com.brh.channel.schedule.entity.ScheduleJobEntity" useGeneratedKeys="true" keyProperty="jobId">
+		insert into schedule_job
+		(
+			job_id,
+			bean_name, 
+			method_name, 
+			params, 
+			cron_expression, 
+			status, 
+			remark, 
+			create_time
+		)
+		values
+		(
+			#{jobId},
+			#{beanName}, 
+			#{methodName}, 
+			#{params}, 
+			#{cronExpression}, 
+			#{status}, 
+			#{remark}, 
+			#{createTime}
+		)
+	</insert>
+	<insert id="save" parameterType="com.brh.channel.schedule.entity.ScheduleJobEntity">
+		<selectKey keyProperty="jobId" order="BEFORE" resultType="Long">
+			select CREDIT_ID_SEQ.Nextval as ID from dual
+		</selectKey>
+		insert into schedule_job
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+				JOB_ID,
+			<if test="beanName != null">
+				BEAN_NAME,
+			</if>
+			<if test="methodName != null">
+				METHOD_NAME,
+			</if>
+			<if test="params != null">
+				PARAMS,
+			</if>
+			<if test="cronExpression != null">
+				CRON_EXPRESSION,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="remark != null">
+				REMARK,
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+				#{jobId,jdbcType=DECIMAL},
+			<if test="beanName != null">
+				#{beanName,jdbcType=VARCHAR},
+			</if>
+			<if test="methodName != null">
+				#{methodName,jdbcType=VARCHAR},
+			</if>
+			<if test="params != null">
+				#{params,jdbcType=VARCHAR},
+			</if>
+			<if test="cronExpression != null">
+				#{cronExpression,jdbcType=DECIMAL},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert> 
+	<update id="update" parameterType="com.brh.channel.schedule.entity.ScheduleJobEntity">
+		update schedule_job 
+		<set> 
+			<if test="beanName != null">bean_name = #{beanName}, </if>
+			<if test="methodName != null">method_name = #{methodName}, </if>
+			<if test="params != null">params = #{params}, </if>
+			<if test="cronExpression != null">cron_expression = #{cronExpression}, </if>
+			<if test="status != null">status = #{status}, </if>
+			<if test="remark != null">remark = #{remark}, </if>
+		</set>
+		where job_id = #{jobId}
+	</update>
+	
+	<!-- 批量更新状态 -->
+	<update id="updateBatch"> 
+		update schedule_job set status = #{status} where job_id in 
+		<foreach item="jobId" collection="list"  open="(" separator="," close=")">
+			#{jobId}
+		</foreach>
+	</update>
+	
+	<delete id="deleteBatch">
+		delete from schedule_job where job_id in 
+		<foreach item="jobId" collection="array" open="(" separator="," close=")">
+			#{jobId}
+		</foreach>
+	</delete>
+</mapper>

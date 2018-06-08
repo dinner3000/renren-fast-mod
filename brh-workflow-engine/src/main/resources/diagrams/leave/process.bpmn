@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
+  <process id="process" isExecutable="true">
+    <startEvent id="StartEvent" name="录入完成,启动流程" activiti:initiator="applyUserId"></startEvent>
+    <userTask id="checkFirst" name="邦付宝初审1"></userTask>
+    <endEvent id="sid-FD879EA0-69C7-4404-A205-C6A3EFED1C52"></endEvent>
+    <userTask id="enterConfirm" name="录入确认"></userTask>
+    <userTask id="sid-A93FC6BB-04C5-47A4-9493-6DBD41D3BE83" name="邦付宝风控审核1"></userTask>
+    <userTask id="sid-90B8CF08-C7C3-4E8C-A6D6-BA4A077DEDEF" name="邦付宝负责人审核1"></userTask>
+    <userTask id="sid-B0B0CCFC-2501-4412-9FAB-3A7A034E46E8" name="补充材料"></userTask>
+    <userTask id="sid-8430F0CE-D226-4839-899E-CE02180418B4" name="邦付宝初审2"></userTask>
+    <userTask id="sid-4F6F4CA5-0896-4E17-952C-14162E9BD74C" name="邦付宝风控审核2"></userTask>
+    <userTask id="sid-1872BC1C-ACFD-442E-9D66-A840ABB43449" name="邦付宝负责人审核2"></userTask>
+    <userTask id="sid-34F69324-5058-4CA1-96E8-B2778670015A" name="财险业务初审"></userTask>
+    <userTask id="sid-F18204F1-A54A-43F1-AD94-74C3E39F23B9" name="财险风控审核"></userTask>
+    <userTask id="sid-186D544F-E7AF-4847-8BE7-FE16A5603583" name="财险负责人审核"></userTask>
+    <sequenceFlow id="sid-9705D220-0797-4CE2-8EE4-F35BEA07C6C5" sourceRef="sid-186D544F-E7AF-4847-8BE7-FE16A5603583" targetRef="sid-FD879EA0-69C7-4404-A205-C6A3EFED1C52"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_process">
+    <bpmndi:BPMNPlane bpmnElement="process" id="BPMNPlane_process">
+      <bpmndi:BPMNShape bpmnElement="StartEvent" id="BPMNShape_StartEvent">
+        <omgdc:Bounds height="30.0" width="30.0" x="45.0" y="86.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="checkFirst" id="BPMNShape_checkFirst">
+        <omgdc:Bounds height="80.0" width="100.0" x="345.0" y="75.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-FD879EA0-69C7-4404-A205-C6A3EFED1C52" id="BPMNShape_sid-FD879EA0-69C7-4404-A205-C6A3EFED1C52">
+        <omgdc:Bounds height="28.0" width="28.0" x="771.0" y="340.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="enterConfirm" id="BPMNShape_enterConfirm">
+        <omgdc:Bounds height="80.0" width="100.0" x="150.0" y="75.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-A93FC6BB-04C5-47A4-9493-6DBD41D3BE83" id="BPMNShape_sid-A93FC6BB-04C5-47A4-9493-6DBD41D3BE83">
+        <omgdc:Bounds height="80.0" width="100.0" x="570.0" y="75.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-90B8CF08-C7C3-4E8C-A6D6-BA4A077DEDEF" id="BPMNShape_sid-90B8CF08-C7C3-4E8C-A6D6-BA4A077DEDEF">
+        <omgdc:Bounds height="80.0" width="100.0" x="750.0" y="75.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-B0B0CCFC-2501-4412-9FAB-3A7A034E46E8" id="BPMNShape_sid-B0B0CCFC-2501-4412-9FAB-3A7A034E46E8">
+        <omgdc:Bounds height="80.0" width="100.0" x="150.0" y="187.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-8430F0CE-D226-4839-899E-CE02180418B4" id="BPMNShape_sid-8430F0CE-D226-4839-899E-CE02180418B4">
+        <omgdc:Bounds height="80.0" width="100.0" x="345.0" y="187.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-4F6F4CA5-0896-4E17-952C-14162E9BD74C" id="BPMNShape_sid-4F6F4CA5-0896-4E17-952C-14162E9BD74C">
+        <omgdc:Bounds height="80.0" width="100.0" x="570.0" y="187.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-1872BC1C-ACFD-442E-9D66-A840ABB43449" id="BPMNShape_sid-1872BC1C-ACFD-442E-9D66-A840ABB43449">
+        <omgdc:Bounds height="80.0" width="100.0" x="750.0" y="187.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-34F69324-5058-4CA1-96E8-B2778670015A" id="BPMNShape_sid-34F69324-5058-4CA1-96E8-B2778670015A">
+        <omgdc:Bounds height="80.0" width="100.0" x="150.0" y="314.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-F18204F1-A54A-43F1-AD94-74C3E39F23B9" id="BPMNShape_sid-F18204F1-A54A-43F1-AD94-74C3E39F23B9">
+        <omgdc:Bounds height="80.0" width="100.0" x="345.0" y="314.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-186D544F-E7AF-4847-8BE7-FE16A5603583" id="BPMNShape_sid-186D544F-E7AF-4847-8BE7-FE16A5603583">
+        <omgdc:Bounds height="80.0" width="100.0" x="570.0" y="314.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-9705D220-0797-4CE2-8EE4-F35BEA07C6C5" id="BPMNEdge_sid-9705D220-0797-4CE2-8EE4-F35BEA07C6C5">
+        <omgdi:waypoint x="670.0" y="354.0"></omgdi:waypoint>
+        <omgdi:waypoint x="771.0" y="354.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

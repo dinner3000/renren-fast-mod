@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>控制台</title>
+#parse("sys/header.html")
+</head>
+<body>
+	已部署流程列表
+	<div id="rrapp" v-cloak>
+		<table id="jqGrid"></table>
+		<div id="jqGridPager"></div>
+	</div>
+	<script src="${rc.contextPath}/js/sys/flow.js?_${date.systemTime}"></script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.brh.channel.web.dao.SysDeptDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.brh.channel.web.entity.SysDeptEntity" id="sysDeptMap">
+        <result property="deptId" column="DEPT_ID"/>
+        <result property="parentId" column="PARENT_ID"/>
+        <result property="name" column="NAME"/>
+        <result property="orderNum" column="ORDER_NUM"/>
+        <result property="delFlag" column="DEL_FLAG"/>
+        <result property="agencyId" column="AGENCY_ID"/>
+        <result property="agencyNm" column="AGENCY_NM"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.brh.channel.web.entity.SysDeptEntity">
+		select * from SYS_DEPT where DEPT_ID = #{value}
+	</select>
+
+<!-- 	<select id="queryList" resultType="com.brh.channel.web.entity.SysDeptEntity"> -->
+<!-- 		select m.* from (select rownum rn, SYS_DEPT.* from SYS_DEPT -->
+<!--         <choose> -->
+<!--             <when test="sidx != null and sidx.trim() != ''"> -->
+<!--                 order by ${sidx} ${order} -->
+<!--             </when> -->
+<!-- 			<otherwise> -->
+<!--                 order by DEPT_ID desc -->
+<!-- 			</otherwise> -->
+<!--         </choose>)m -->
+<!-- 		<if test="offset != null and limit != null"> -->
+<!-- 			where rn between  #{offset} and  #{limit}	 -->
+<!-- 		</if> -->
+<!-- 	</select> -->
+	<select id="queryList" resultType="com.brh.channel.web.entity.SysDeptEntity">
+		select n.* from (select m.*,rownum rn,(
+			select p.name
+                  from sys_dept p
+                  left join agency_info a
+                    on p.agency_id = a.agency_id
+                 where p.dept_id = m.parent_id) as parentName
+          from sys_dept m where 1=1
+          <if test="name != null and name.trim() != ''">
+				and name like '%'||#{name}||'%'  
+			</if>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by m.${sidx} ${order}
+			</when>
+			<otherwise>
+				order by m.order_num asc
+			</otherwise>
+		</choose>
+		)n
+		<if test="offset != null and limit != null">
+			where rn between #{offset} and #{limit}
+		</if>
+	</select>
+	
+	<select id="queryListAll" resultType="com.brh.channel.web.entity.SysDeptEntity">
+		select m.*,rownum rn,(
+			select p.name
+                  from sys_dept p
+                  left join agency_info a
+                    on p.agency_id = a.agency_id
+                 where p.dept_id = m.parent_id) as parentName
+          from sys_dept m order by parent_id,order_num asc 
+	</select>
+	
+	<select id="queryNotButtonList" resultType="com.brh.channel.web.entity.SysDeptEntity">
+		select * from sys_dept order by order_num asc 
+	</select>
+	
+	<select id="queryReDeptIdByDeptNm" resultType="bigDecimal" parameterType="java.lang.String">
+		select DEPT_ID from SYS_DEPT where name = #{deptNm,jdbcType=VARCHAR}
+    </select>
+	
+	<select id="queryReDeptNmByDeptNm" resultType="int" parameterType="java.lang.String">
+		select count(name) from SYS_DEPT where name = #{deptNm,jdbcType=VARCHAR}
+    </select>
+  
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from SYS_DEPT where 1=1
+		<if test="name != null and name.trim() != ''">
+				and name like '%'||#{name}||'%'  
+		</if>
+	</select>
+  <insert id="insert" parameterType="com.brh.channel.web.entity.SysDeptEntity">
+    insert into SYS_DEPT (DEPT_ID, PARENT_ID, NAME, 
+      ORDER_NUM, DEL_FLAG)
+    values (#{deptId,jdbcType=DECIMAL}, #{parentId,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR}, 
+      #{orderNum,jdbcType=DECIMAL}, #{delFlag,jdbcType=DECIMAL})
+  </insert>
+  
+  <insert id="save" parameterType="com.brh.channel.web.entity.SysDeptEntity">
+ 		<selectKey keyProperty="deptId" order="BEFORE" resultType="BigDecimal">
+			select CREDIT_ID_SEQ.Nextval as ID from dual
+		</selectKey>
+    insert into SYS_DEPT
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+<!--       <if test="deptId != null"> -->
+        DEPT_ID,
+<!--       </if> -->
+      <if test="parentId != null">
+        PARENT_ID,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="orderNum != null">
+        ORDER_NUM,
+      </if>
+      <if test="delFlag != null">
+        DEL_FLAG,
+      </if>
+      <if test="agencyId != null">
+        AGENCY_ID,
+      </if>
+      <if test="agencyNm != null">
+        AGENCY_NM,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+<!--       <if test="deptId != null"> -->
+        #{deptId,jdbcType=DECIMAL},
+<!--       </if> -->
+      <if test="parentId != null">
+        #{parentId,jdbcType=DECIMAL},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null">
+        #{orderNum,jdbcType=DECIMAL},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=DECIMAL},
+      </if>
+      <if test="agencyId != null">
+        #{agencyId,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyNm != null">
+        #{agencyNm,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert> 
+	<insert id="insertSelective" parameterType="com.brh.channel.web.entity.SysDeptEntity">
+		<selectKey keyProperty="deptId" order="BEFORE" resultType="Long">
+			select CREDIT_ID_SEQ.Nextval as ID from dual
+		</selectKey>
+		insert into SYS_DEPT
+		(
+			DEPT_ID , 
+			PARENT_ID , 
+			NAME , 
+			ORDER_NUM , 
+			DEL_FLAG 
+		)
+		values
+		(
+			#{deptId}, 
+			#{parentId}, 
+			#{name}, 
+			#{orderNum}, 
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update" parameterType="com.brh.channel.web.entity.SysDeptEntity">
+		update SYS_DEPT 
+		<set>
+			<if test="parentId != null">PARENT_ID = #{parentId}, </if>
+			<if test="name != null">NAME = #{name}, </if>
+			<if test="orderNum != null">ORDER_NUM = #{orderNum}, </if>
+			<if test="delFlag != null">DEL_FLAG = #{delFlag},</if>
+<!-- 			<if test="agencyId != null">AGENCY_ID = #{agencyId},</if> -->
+<!-- 			<if test="agencyNm != null">AGENCY_NM = #{agencyNm},</if> -->
+				AGENCY_ID = #{agencyId},
+				AGENCY_NM = #{agencyNm},
+		</set>
+		where DEPT_ID = #{deptId,jdbcType=DECIMAL}
+	</update>
+	
+	<delete id="delete">
+		delete from SYS_DEPT where DEPT_ID = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from SYS_DEPT where DEPT_ID in 
+		<foreach item="deptId" collection="array" open="(" separator="," close=")">
+			#{deptId}
+		</foreach>
+	</delete>
+	
+	<select id="deptInfoByUserId" parameterType="string" resultType="com.brh.channel.web.entity.SysDeptEntity">
+		select *
+		  from sys_user a
+		  join sys_dept b
+		    on a.dept_id = b.dept_id
+	 	where a.user_Id = #{userId}
+	</select>
+	
+</mapper>
